@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Support 24/7</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --secondary: #81c784;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin-top: 20px;
+        }
+        
+        nav ul li {
+            margin-right: 20px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: var(--secondary);
+        }
+        
+        .content {
+            display: flex;
+            margin-top: 20px;
+            gap: 20px;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            padding: 20px;
+        }
+        
+        .main {
+            flex: 1;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            padding: 20px;
+        }
+        
+        .patient-form {
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary);
+        }
+        
+        .blood-test-form {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        
+        .patient-list {
+            margin-top: 20px;
+        }
+        
+        .patient-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .patient-item:hover {
+            background-color: #f5f7fa;
+        }
+        
+        .patient-item.active {
+            background-color: #e0f0ff;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .chart-container {
+            height: 400px;
+            margin-top: 30px;
+        }
+        
+        .reports-section {
+            margin-top: 30px;
+        }
+        
+        .report-card {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .report-date {
+            color: #888;
+            font-size: 14px;
+        }
+        
+        .chat-section {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 70%;
+        }
+        
+        .message.user {
+            background-color: var(--light);
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        
+        .message.doctor {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .chat-input {
+            display: flex;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+        
+        .chat-input button {
+            padding: 10px 15px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        .tab-headers {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab-header {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab-header.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        
+        .status-online {
+            background-color: var(--success);
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
+                <h1>Dr. Support 24/7</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" id="dashboard-link">Dashboard</a></li>
+                    <li><a href="#" id="patients-link">Patients</a></li>
+                    <li><a href="#" id="reports-link">Reports</a></li>
+                    <li><a href="#" id="chat-link">Support Chat</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="content">
+            <div class="sidebar">
+                <h3>Patients</h3>
+                <p><span class="status-indicator status-online"></span> Doctor on call</p>
+                <div class="patient-list" id="patient-list">
+                    <!-- Patient list will be populated here dynamically -->
+                </div>
+                <button class="btn" id="add-patient-btn" style="width: 100%; margin-top: 15px;">Add New Patient</button>
+            </div>
+            
+            <div class="main">
+                <div class="tab-headers">
+                    <div class="tab-header active" data-tab="dashboard">Dashboard</div>
+                    <div class="tab-header" data-tab="patient-form">Patient Information</div>
+                    <div class="tab-header" data-tab="blood-tests">Blood Tests</div>
+                    <div class="tab-header" data-tab="reports">Reports</div>
+                    <div class="tab-header" data-tab="chat">Support Chat</div>
+                </div>
+                
+                <div class="tab-content active" id="dashboard-tab">
+                    <h2>Dashboard</h2>
+                    <p>Welcome to the Dr. Support 24/7 portal. Select a patient from the sidebar or add a new patient to get started.</p>
+                    
+                    <div class="chart-container">
+                        <canvas id="overview-chart"></canvas>
+                    </div>
+                    
+                    <div style="display: flex; gap: 20px; margin-top: 20px;">
+                        <div style="flex: 1; background-color: #e0f7fa; padding: 20px; border-radius: 5px;">
+                            <h3>Patients</h3>
+                            <h2 id="patient-count">0</h2>
+                        </div>
+                        <div style="flex: 1; background-color: #e8f5e9; padding: 20px; border-radius: 5px;">
+                            <h3>Reports</h3>
+                            <h2 id="report-count">0</h2>
+                        </div>
+                        <div style="flex: 1; background-color: #fff8e1; padding: 20px; border-radius: 5px;">
+                            <h3>Tests</h3>
+                            <h2 id="test-count">0</h2>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="patient-form-tab">
+                    <h2>Patient Information</h2>
+                    <form id="patient-information-form" class="patient-form">
+                        <div class="form-group">
+                            <label for="patient-id">Patient ID</label>
+                            <input type="text" id="patient-id" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="patient-name">Full Name</label>
+                            <input type="text" id="patient-name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="patient-age">Age</label>
+                            <input type="number" id="patient-age" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="patient-gender">Gender</label>
+                            <select id="patient-gender" class="form-control" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="patient-contact">Contact Number</label>
+                            <input type="tel" id="patient-contact" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="patient-email">Email</label>
+                            <input type="email" id="patient-email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="patient-address">Address</label>
+                            <textarea id="patient-address" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="patient-medical-history">Medical History</label>
+                            <textarea id="patient-medical-history" class="form-control" rows="5"></textarea>
+                        </div>
+                        <button type="submit" class="btn">Save Patient Information</button>
+                    </form>
+                </div>
+                
+                <div class="tab-content" id="blood-tests-tab">
+                    <h2>Blood Test Results</h2>
+                    <p id="blood-test-patient-name">No patient selected</p>
+                    
+                    <form id="blood-test-form" class="blood-test-form">
+                        <div class="form-group">
+                            <label for="test-date">Test Date</label>
+                            <input type="date" id="test-date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hemoglobin">Hemoglobin (g/dL)</label>
+                            <input type="number" step="0.1" id="hemoglobin" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="wbc">White Blood Cells (WBC) (K/uL)</label>
+                            <input type="number" step="0.1" id="wbc" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="rbc">Red Blood Cells (RBC) (M/uL)</label>
+                            <input type="number" step="0.1" id="rbc" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="platelets">Platelets (K/uL)</label>
+                            <input type="number" step="1" id="platelets" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="glucose">Glucose (mg/dL)</label>
+                            <input type="number" step="1" id="glucose" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cholesterol">Cholesterol (mg/dL)</label>
+                            <input type="number" step="1" id="cholesterol" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn">Save Blood Test Results</button>
+                    </form>
+                    
+                    <div class="chart-container">
+                        <canvas id="blood-test-chart"></canvas>
+                    </div>
+                    
+                    <div id="blood-test-history">
+                        <h3>Blood Test History</h3>
+                        <div id="blood-test-table-container">
+                            <table id="blood-test-table" style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                                <thead>
+                                    <tr>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Date</th>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Hemoglobin</th>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">WBC</th>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">RBC</th>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Platelets</th>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Glucose</th>
+                                        <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Cholesterol</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="blood-test-table-body">
+                                    <!-- Table rows will be populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="reports-tab">
+                    <h2>Patient Reports</h2>
+                    <p id="reports-patient-name">No patient selected</p>
+                    
+                    <div class="reports-section" id="reports-container">
+                        <!-- Reports will be displayed here -->
+                    </div>
+                    
+                    <button id="generate-report-btn" class="btn">Generate New Report</button>
+                </div>
+                
+                <div class="tab-content" id="chat-tab">
+                    <h2>24/7 Doctor Support Chat</h2>
+                    <p>Connect with a medical professional for immediate assistance.</p>
+                    
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message doctor">
+                            <strong>Dr. Support:</strong> Hello! How can I assist you today?
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input">
+                        <input type="text" id="chat-input-field" placeholder="Type your message here...">
+                        <button id="send-message-btn">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Global variables
+        let patients = JSON.parse(localStorage.getItem('patients')) || [];
+        let bloodTests = JSON.parse(localStorage.getItem('bloodTests')) || [];
+        let reports = JSON.parse(localStorage.getItem('reports')) || [];
+        let currentPatient = null;
+        let bloodTestChart = null;
+        let overviewChart = null;
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTabs();
+            updatePatientList();
+            updateDashboardCounts();
+            initializeCharts();
+            setupEventListeners();
+        });
+        
+        // Initialize tab navigation
+        function initializeTabs() {
+            const tabHeaders = document.querySelectorAll('.tab-header');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const tabName = header.getAttribute('data-tab');
+                    
+                    // Update active tab header
+                    tabHeaders.forEach(h => h.classList.remove('active'));
+                    header.classList.add('active');
+                    
+                    // Update active tab content
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(${tabName}-tab).classList.add('active');
+                });
+            });
+            
+            // Set up navigation links
+            document.getElementById('dashboard-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector('[data-tab="dashboard"]').click();
+            });
+            
+            document.getElementById('patients-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector('[data-tab="patient-form"]').click();
+            });
+            
+            document.getElementById('reports-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector('[data-tab="reports"]').click();
+            });
+            
+            document.getElementById('chat-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector('[data-tab="chat"]').click();
+            });
+        }
+        
+        // Set up event listeners
+        function setupEventListeners() {
+            // Add new patient button
+            document.getElementById('add-patient-btn').addEventListener('click', () => {
+                currentPatient = null;
+                document.getElementById('patient-information-form').reset();
+                document.getElementById('patient-id').value = generatePatientId();
+                document.querySelector('[data-tab="patient-form"]').click();
+            });
+            
+            // Save patient form
+            document.getElementById('patient-information-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                savePatientInformation();
+            });
+            
+            // Save blood test form
+            document.getElementById('blood-test-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                saveBloodTestResults();
+            });
+            
+            // Generate report button
+            document.getElementById('generate-report-btn').addEventListener('click', () => {
+                if (currentPatient) {
+                    generatePatientReport();
+                } else {
+                    alert('Please select a patient first.');
+                }
+            });
+            
+            // Chat send button
+            document.getElementById('send-message-btn').addEventListener('click', () => {
+                sendChatMessage();
+            });
+            
+            // Chat input enter key
+            document.getElementById('chat-input-field').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendChatMessage();
+                }
+            });
+        }
+        
+        // Update patient list in sidebar
+        function updatePatientList() {
+            const patientListElement = document.getElementById('patient-list');
+            patientListElement.innerHTML = '';
+            
+            if (patients.length === 0) {
+                patientListElement.innerHTML = '<p>No patients yet</p>';
+                return;
+            }
+            
+            patients.forEach(patient => {
+                const patientItem = document.createElement('div');
+                patientItem.className = 'patient-item';
+                if (currentPatient && patient.id === currentPatient.id) {
+                    patientItem.classList.add('active');
+                }
+                patientItem.textContent = patient.name;
+                patientItem.addEventListener('click', () => selectPatient(patient));
+                patientListElement.appendChild(patientItem);
+            });
+        }
+        
+        // Select a patient
+        function selectPatient(patient) {
+            currentPatient = patient;
+            
+            // Update UI to show selected patient
+            const patientItems = document.querySelectorAll('.patient-item');
+            patientItems.forEach(item => item.classList.remove('active'));
+            document.querySelector(.patient-item:nth-child(${patients.indexOf(patient) + 1})).classList.add('active');
+            
+            // Fill patient form
+            document.getElementById('patient-id').value = patient.id;
+            document.getElementById('patient-name').value = patient.name;
+            document.getElementById('patient-age').value = patient.age;
+            document.getElementById('patient-gender').value = patient.gender;
+            document.getElementById('patient-contact').value = patient.contact;
+            document.getElementById('patient-email').value = patient.email;
+            document.getElementById('patient-address').value = patient.address;
+            document.getElementById('patient-medical-history').value = patient.medicalHistory;
+            
+            // Update blood test patient name
+            document.getElementById('blood-test-patient-name').textContent = Patient: ${patient.name} (ID: ${patient.id});
+            
+            // Update reports patient name
+            document.getElementById('reports-patient-name').textContent = Patient: ${patient.name} (ID: ${patient.id});
+            
+            // Load blood test history
+            loadBloodTestHistory();
+            
+            // Load patient reports
+            loadPatientReports();
+            
+            // Update blood test chart
+            updateBloodTestChart();
+        }
+        
+        // Generate a unique patient ID
+        function generatePatientId() {
+            return 'PT-' + Date.now().toString().slice(-6);
+        }
+        
+        // Save patient information
+        function savePatientInformation() {
+            const patientId = document.getElementById('patient-id').value;
+            const patientName = document.getElementById('patient-name').value;
+            const patientAge = document.getElementById('patient-age').value;
+            const patientGender = document.getElementById('patient-gender').value;
+            const patientContact = document.getElementById('patient-contact').value;
+            const patientEmail = document.getElementById('patient-email').value;
+            const patientAddress = document.getElementById('patient-address').value;
+            const patientMedicalHistory = document.getElementById('patient-medical-history').value;
+            
+            const patientData = {
+                id: patientId,
+                name: patientName,
+                age: patientAge,
+                gender: patientGender,
+                contact: patientContact,
+                email: patientEmail,
+                address: patientAddress,
+                medicalHistory: patientMedicalHistory,
+                createdAt: new Date().toISOString()
+            };
+            
+            if (currentPatient) {
+                // Update existing patient
+                const index = patients.findIndex(p => p.id === currentPatient.id);
+                if (index !== -1) {
+                    patients[index] = patientData;
+                }
+            } else {
+                // Add new patient
+                patients.push(patientData);
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('patients', JSON.stringify(patients));
+            
+            // Update current patient
+            currentPatient = patientData;
+            
+            // Update the patient list
+            updatePatientList();
+            
+            // Update dashboard counts
+            updateDashboardCounts();
+            
+            alert('Patient information saved successfully!');
+        }
+        
+        // Save blood test results
+        function saveBloodTestResults() {
+            if (!currentPatient) {
+                alert('Please select a patient first.');
+                return;
+            }
+            
+            const testDate = document.getElementById('test-date').value;
+            const hemoglobin = parseFloat(document.getElementById('hemoglobin').value);
+            const wbc = parseFloat(document.getElementById('wbc').value);
+            const rbc = parseFloat(document.getElementById('rbc').value);
+            const platelets = parseInt(document.getElementById('platelets').value);
+            const glucose = parseInt(document.getElementById('glucose').value);
+            const cholesterol = parseInt(document.getElementById('cholesterol').value);
+            
+            const bloodTestData = {
+                patientId: currentPatient.id,
+                testDate: testDate,
+                hemoglobin: hemoglobin,
+                wbc: wbc,
+                rbc: rbc,
+                platelets: platelets,
+                glucose: glucose,
+                cholesterol: cholesterol,
+                createdAt: new Date().toISOString()
+            };
+            
+            // Add blood test data
+            bloodTests.push(bloodTestData);
+            
+            // Save to localStorage
+            localStorage.setItem('bloodTests', JSON.stringify(bloodTests));
+            
+            // Reset form
+            document.getElementById('blood-test-form').reset();
+            
+            // Update blood test history and chart
+            loadBloodTestHistory();
+            updateBloodTestChart();
+            
+            // Update dashboard counts
+            updateDashboardCounts();
+            
+            alert('Blood test results saved successfully!');
+        }
+        
+        // Load blood test history
+        function loadBloodTestHistory() {
+            if (!currentPatient) return;
+            
+            const patientBloodTests = bloodTests.filter(test => test.patientId === currentPatient.id);
+            const tableBody = document.getElementById('blood-test-table-body');
+            
+            tableBody.innerHTML = '';
+            
+            if (patientBloodTests.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 10px;">No blood test results found</td></tr>';
+                return;
+            }
+            
+            patientBloodTests.sort((a, b) => new Date(b.testDate) - new Date(a.testDate)).forEach(test => {
+                const row = document.createElement('tr');
+                
+                const dateCell = document.createElement('td');
+                dateCell.style.border = '1px solid #ddd';
+                dateCell.style.padding = '8px';
+                dateCell.textContent = new Date(test.testDate).toLocaleDateString();
+                
+                const hemoglobinCell = document.createElement('td');
+                hemoglobinCell.style.border = '1px solid #ddd';
+                hemoglobinCell.style.padding = '8px';
+                hemoglobinCell.textContent = test.hemoglobin + ' g/dL';
+                
+                const wbcCell = document.createElement('td');
+                wbcCell.style.border = '1px solid #ddd';
+                wbcCell.style.padding = '8px';
+                wbcCell.textContent = test.wbc + ' K/uL';
+                
+                const rbcCell = document.createElement('td');
+                rbcCell.style.border = '1px solid #ddd';
+                rbcCell.style.padding = '8px';
+                rbcCell.textContent = test.rbc + ' M/uL';
+                
+                const plateletsCell = document.createElement('td');
+                plateletsCell.style.border = '1px solid #ddd';
+                plateletsCell.style.padding = '8px';
+                plateletsCell.textContent = test.platelets + ' K/uL';
+                
+                const glucoseCell = document.createElement('td');
+                glucoseCell.style.border = '1px solid #ddd';
+                glucoseCell.style.padding = '8px';
+                glucoseCell.textContent = test.glucose + ' mg/dL';
+                
+                const cholesterolCell = document.createElement('td');
+                cholesterolCell.style.border = '1px solid #ddd';
+                cholesterolCell.style.padding = '8px';
+                cholesterolCell.textContent = test.cholesterol + ' mg/dL';
+                
+                row.appendChild(dateCell);
+                row.appendChild(hemoglobinCell);
+                row.appendChild(wbcCell);
+                row.appendChild(rbcCell);
+                row.appendChild(plateletsCell);
+                row.appendChild(glucoseCell);
+                row.appendChild(cholesterolCell);
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Generate patient report
+        function generatePatientReport() {
+            if (!currentPatient) return;
+            
+            const patientBloodTests = bloodTests.filter(test => test.patientId === currentPatient.id);
+            
+            if (patientBloodTests.length === 0) {
+                alert('No blood test results found for this patient.');
+                return;
+            }
+            // Sort blood tests by date (newest first)
+            const latestBloodTest = patientBloodTests.sort((a, b) => new Date(b.testDate) - new Date(a.testDate))[0];
+            
+            // Generate report
+            const reportData = {
+                id: 'REP-' + Date.now().toString().slice(-6),
+                patientId: currentPatient.id,
+                patientName: currentPatient.name,
+                reportDate: new Date().toISOString(),
+                bloodTest: latestBloodTest,
+                analysis: analyzeBloodTestResults(latestBloodTest),
+                recommendations: generateRecommendations(latestBloodTest)
+            };
+            
+            // Add report
+            reports.push(reportData);
+            
+            // Save to localStorage
+            localStorage.setItem('reports', JSON.stringify(reports));
+            
+            // Load patient reports
+            loadPatientReports();
+            
+            // Update dashboard counts
+            updateDashboardCounts();
+            
+            alert('Patient report generated successfully!');
+        }
+        
+        // Analyze blood test results
+        function analyzeBloodTestResults(bloodTest) {
+            let analysis = [];
+            
+            // Hemoglobin analysis
+            if (bloodTest.hemoglobin < 12) {
+                analysis.push('Low hemoglobin levels detected. This may indicate anemia.');
+            } else if (bloodTest.hemoglobin > 16) {
+                analysis.push('High hemoglobin levels detected. This may indicate polycythemia.');
+            } else {
+                analysis.push('Hemoglobin levels are within normal range.');
+            }
+            
+            // WBC analysis
+            if (bloodTest.wbc < 4.5) {
+                analysis.push('Low white blood cell count detected. This may indicate an immune system deficiency.');
+            } else if (bloodTest.wbc > 11) {
+                analysis.push('High white blood cell count detected. This may indicate an infection or inflammation.');
+            } else {
+                analysis.push('White blood cell count is within normal range.');
+            }
+            
+            // RBC analysis
+            if (bloodTest.rbc < 4.2) {
+                analysis.push('Low red blood cell count detected. This may indicate anemia or blood loss.');
+            } else if (bloodTest.rbc > 5.8) {
+                analysis.push('High red blood cell count detected. This may indicate polycythemia.');
+            } else {
+                analysis.push('Red blood cell count is within normal range.');
+            }
+            
+            // Platelets analysis
+            if (bloodTest.platelets < 150) {
+                analysis.push('Low platelet count detected. This may indicate thrombocytopenia.');
+            } else if (bloodTest.platelets > 450) {
+                analysis.push('High platelet count detected. This may indicate thrombocytosis.');
+            } else {
+                analysis.push('Platelet count is within normal range.');
+            }
+            
+            // Glucose analysis
+            if (bloodTest.glucose < 70) {
+                analysis.push('Low blood glucose levels detected. This may indicate hypoglycemia.');
+            } else if (bloodTest.glucose > 100) {
+                analysis.push('High blood glucose levels detected. This may indicate hyperglycemia or diabetes.');
+            } else {
+                analysis.push('Blood glucose levels are within normal range.');
+            }
+            
+            // Cholesterol analysis
+            if (bloodTest.cholesterol < 125) {
+                analysis.push('Low cholesterol levels detected.');
+            } else if (bloodTest.cholesterol > 200) {
+                analysis.push('High cholesterol levels detected. This may increase risk of heart disease.');
+            } else {
+                analysis.push('Cholesterol levels are within normal range.');
+            }
+            
+            return analysis;
+        }
+        
+        // Generate recommendations based on blood test results
+        function generateRecommendations(bloodTest) {
+            let recommendations = [];
+            
+            // Hemoglobin recommendations
+            if (bloodTest.hemoglobin < 12) {
+                recommendations.push('Consider iron supplementation or dietary changes to increase iron intake.');
+                recommendations.push('Further investigation may be needed to determine the cause of low hemoglobin.');
+            } else if (bloodTest.hemoglobin > 16) {
+                recommendations.push('Further investigation may be needed to determine the cause of high hemoglobin.');
+            }
+            
+            // WBC recommendations
+            if (bloodTest.wbc < 4.5) {
+                recommendations.push('Monitor for signs of infection.');
+                recommendations.push('Further investigation may be needed to determine the cause of low white blood cell count.');
+            } else if (bloodTest.wbc > 11) {
+                recommendations.push('Further investigation may be needed to identify potential infection or inflammation.');
+            }
+            
+            // Glucose recommendations
+            if (bloodTest.glucose > 100) {
+                recommendations.push('Consider dietary changes to reduce sugar intake.');
+                recommendations.push('Regular monitoring of blood glucose levels is recommended.');
+                if (bloodTest.glucose > 126) {
+                    recommendations.push('Consider diabetes screening.');
+                }
+            }
+            
+            // Cholesterol recommendations
+            if (bloodTest.cholesterol > 200) {
+                recommendations.push('Consider dietary changes to reduce cholesterol intake.');
+                recommendations.push('Regular exercise is recommended.');
+                recommendations.push('Regular monitoring of cholesterol levels is recommended.');
+                if (bloodTest.cholesterol > 240) {
+                    recommendations.push('Consider medication to lower cholesterol levels.');
+                }
+            }
+            
+            // General recommendations
+            recommendations.push('Maintain a balanced diet rich in fruits and vegetables.');
+            recommendations.push('Stay well-hydrated by drinking plenty of water.');
+            recommendations.push('Regular exercise is recommended for overall health.');
+            recommendations.push('Follow up with healthcare provider for regular check-ups.');
+            
+            return recommendations;
+        }
+        
+        // Load patient reports
+        function loadPatientReports() {
+            if (!currentPatient) return;
+            
+            const patientReports = reports.filter(report => report.patientId === currentPatient.id);
+            const reportsContainer = document.getElementById('reports-container');
+            
+            reportsContainer.innerHTML = '';
+            
+            if (patientReports.length === 0) {
+                reportsContainer.innerHTML = '<p>No reports found for this patient.</p>';
+                return;
+            }
+            
+            patientReports.sort((a, b) => new Date(b.reportDate) - new Date(a.reportDate)).forEach(report => {
+                const reportCard = document.createElement('div');
+                reportCard.className = 'report-card';
+                
+                const reportHeader = document.createElement('div');
+                reportHeader.style.display = 'flex';
+                reportHeader.style.justifyContent = 'space-between';
+                reportHeader.style.marginBottom = '10px';
+                
+                const reportTitle = document.createElement('h3');
+                reportTitle.textContent = Report ID: ${report.id};
+                
+                const reportDate = document.createElement('span');
+                reportDate.className = 'report-date';
+                reportDate.textContent = new Date(report.reportDate).toLocaleString();
+                
+                reportHeader.appendChild(reportTitle);
+                reportHeader.appendChild(reportDate);
+                
+                const bloodTestDate = document.createElement('p');
+                bloodTestDate.innerHTML = <strong>Blood Test Date:</strong> ${new Date(report.bloodTest.testDate).toLocaleDateString()};
+                
+                const bloodTestValues = document.createElement('div');
+                bloodTestValues.style.display = 'flex';
+                bloodTestValues.style.flexWrap = 'wrap';
+                bloodTestValues.style.gap = '10px';
+                bloodTestValues.style.margin = '15px 0';
+                
+                const parameters = [
+                    { name: 'Hemoglobin', value: {report.bloodTest.hemoglobin} g/dL }
+                    { name: 'WBC', value: {report.bloodTest.wbc} K/uL }
+                    { name: 'RBC', value: {report.bloodTest.rbc} M/uL }
+                    { name: 'Platelets', value: {report.bloodTest.platelets} K/uL }
+                    { name: 'Glucose', value: {report.bloodTest.glucose} mg/dL }
+                    { name: 'Cholesterol', value: {report.bloodTest.cholesterol} mg/dL }
+                ];
+                
+                parameters.forEach(param => {
+                    const paramBox = document.createElement('div');
+                    paramBox.style.padding = '8px';
+                    paramBox.style.backgroundColor = '#f0f0f0';
+                    paramBox.style.borderRadius = '4px';
+                    paramBox.style.minWidth = '150px';
+                    
+                    const paramName = document.createElement('div');
+                    paramName.style.fontSize = '12px';
+                    paramName.style.color = '#666';
+                    paramName.textContent = param.name;
+                    
+                    const paramValue = document.createElement('div');
+                    paramValue.style.fontSize = '16px';
+                    paramValue.style.fontWeight = 'bold';
+                    paramValue.textContent = param.value;
+                    
+                    paramBox.appendChild(paramName);
+                    paramBox.appendChild(paramValue);
+                    
+                    bloodTestValues.appendChild(paramBox);
+                });
+                
+                const analysisTitle = document.createElement('h4');
+                analysisTitle.textContent = 'Analysis';
+                analysisTitle.style.marginTop = '15px';
+                
+                const analysisList = document.createElement('ul');
+                analysisList.style.paddingLeft = '20px';
+                
+                report.analysis.forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = item;
+                    listItem.style.marginBottom = '5px';
+                    analysisList.appendChild(listItem);
+                });
+                
+                const recommendationsTitle = document.createElement('h4');
+                recommendationsTitle.textContent = 'Recommendations';
+                recommendationsTitle.style.marginTop = '15px';
+                
+                const recommendationsList = document.createElement('ul');
+                recommendationsList.style.paddingLeft = '20px';
+                
+                report.recommendations.forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = item;
+                    listItem.style.marginBottom = '5px';
+                    recommendationsList.appendChild(listItem);
+                });
+                
+                const printButton = document.createElement('button');
+                printButton.className = 'btn';
+                printButton.style.marginTop = '15px';
+                printButton.textContent = 'Print Report';
+                printButton.addEventListener('click', () => {
+                    printReport(report);
+                });
+                
+                reportCard.appendChild(reportHeader);
+                reportCard.appendChild(bloodTestDate);
+                reportCard.appendChild(bloodTestValues);
+                reportCard.appendChild(analysisTitle);
+                reportCard.appendChild(analysisList);
+                reportCard.appendChild(recommendationsTitle);
+                reportCard.appendChild(recommendationsList);
+                reportCard.appendChild(printButton);
+                
+                reportsContainer.appendChild(reportCard);
+            });
+        }
+        
+        // Print report
+        function printReport(report) {
+            const printWindow = window.open('', '_blank');
+            
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Patient Report - ${report.patientName}</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            line-height: 1.6;
+                            margin: 0;
+                            padding: 20px;
+                        }
+                        .header {
+                            text-align: center;
+                            margin-bottom: 30px;
+                        }
+                        .report-info {
+                            margin-bottom: 20px;
+                        }
+                        .report-info p {
+                            margin: 5px 0;
+                        }
+                        .section {
+                            margin-bottom: 20px;
+                        }
+                        .section h3 {
+                            border-bottom: 1px solid #ddd;
+                            padding-bottom: 5px;
+                        }
+                        .parameter {
+                            display: inline-block;
+                            width: 30%;
+                            margin-right: 3%;
+                            margin-bottom: 15px;
+                            vertical-align: top;
+                        }
+                        .parameter-name {
+                            font-weight: bold;
+                        }
+                        .footer {
+                            margin-top: 50px;
+                            text-align: center;
+                            font-size: 12px;
+                            color: #777;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>Dr. Support 24/7</h1>
+                        <h2>Patient Blood Test Report</h2>
+                    </div>
+                    
+                    <div class="report-info">
+                        <p><strong>Report ID:</strong> ${report.id}</p>
+                        <p><strong>Patient Name:</strong> ${report.patientName}</p>
+                        <p><strong>Report Date:</strong> ${new Date(report.reportDate).toLocaleString()}</p>
+                        <p><strong>Blood Test Date:</strong> ${new Date(report.bloodTest.testDate).toLocaleDateString()}</p>
+                    </div>
+                    
+                    <div class="section">
+                        <h3>Blood Test Results</h3>
+                        <div class="parameter">
+                            <p class="parameter-name">Hemoglobin:</p>
+                            <p>${report.bloodTest.hemoglobin} g/dL</p>
+                        </div>
+                        <div class="parameter">
+                            <p class="parameter-name">White Blood Cells (WBC):</p>
+                            <p>${report.bloodTest.wbc} K/uL</p>
+                        </div>
+                        <div class="parameter">
+                            <p class="parameter-name">Red Blood Cells (RBC):</p>
+                            <p>${report.bloodTest.rbc} M/uL</p>
+                        </div>
+                        <div class="parameter">
+                            <p class="parameter-name">Platelets:</p>
+                            <p>${report.bloodTest.platelets} K/uL</p>
+                        </div>
+                        <div class="parameter">
+                            <p class="parameter-name">Glucose:</p>
+                            <p>${report.bloodTest.glucose} mg/dL</p>
+                        </div>
+                        <div class="parameter">
+                            <p class="parameter-name">Cholesterol:</p>
+                            <p>${report.bloodTest.cholesterol} mg/dL</p>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <h3>Analysis</h3>
+                        <ul>
+                            ${report.analysis.map(item => <li>${item}</li>).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="section">
+                        <h3>Recommendations</h3>
+                        <ul>
+                            ${report.recommendations.map(item => <li>${item}</li>).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="footer">
+                        <p>This report was generated by Dr. Support 24/7. For any inquiries, please contact our support team.</p>
+                    </div>
+                </body>
+                </html>
+            `);
+            
+            printWindow.document.close();
+            printWindow.focus();
+            
+            setTimeout(() => {
+                printWindow.print();
+            }, 500);
+        }
+        
+        // Send chat message
+        function sendChatMessage() {
+            const messageInput = document.getElementById('chat-input-field');
+            const message = messageInput.value.trim();
+            
+            if (message === '') return;
+            
+            // Add user message to chat
+            const chatMessages = document.getElementById('chat-messages');
+            const userMessageElement = document.createElement('div');
+            userMessageElement.className = 'message user';
+            userMessageElement.innerHTML = <strong>You:</strong> ${message};
+            chatMessages.appendChild(userMessageElement);
+            
+            // Clear input
+            messageInput.value = '';
+            
+            // Auto-scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Simulate doctor response after delay
+            setTimeout(() => {
+                const responseElement = document.createElement('div');
+                responseElement.className = 'message doctor';
+                
+                let response;
+                
+                // Simple response logic based on keywords
+                if (message.toLowerCase().includes('appointment')) {
+                    response = 'You can schedule an appointment through our portal or call our reception at (555) 123-4567.';
+                } else if (message.toLowerCase().includes('emergency')) {
+                    response = 'If you\'re experiencing a medical emergency, please call 911 or go to your nearest emergency room immediately.';
+                } else if (message.toLowerCase().includes('result') || message.toLowerCase().includes('test')) {
+                    response = 'Your test results will be available in your patient portal once they\'re processed. If you need immediate assistance, please let me know.';
+                } else if (message.toLowerCase().includes('prescription') || message.toLowerCase().includes('medicine')) {
+                    response = 'For prescription refills, please provide your patient ID and medication details. We\'ll process your request within 24 hours.';
+                } else if (message.toLowerCase().includes('thank')) {
+                    response = 'You\'re welcome! Is there anything else I can help you with today?';
+                } else {
+                    response = 'Thank you for your message. How can I assist you with your medical concern today?';
+                }
+                
+                responseElement.innerHTML = <strong>Dr. Support:</strong> ${response};
+                chatMessages.appendChild(responseElement);
+                
+                // Auto-scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
+        }
+        
+        // Initialize charts
+        function initializeCharts() {
+            // Blood test chart
+            const bloodTestChartCanvas = document.getElementById('blood-test-chart');
+            bloodTestChart = new Chart(bloodTestChartCanvas, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Hemoglobin (g/dL)',
+                            data: [],
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'WBC (K/uL)',
+                            data: [],
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Glucose (mg/dL)',
+                            data: [],
+                            borderColor: '#2ecc71',
+                            backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                            tension: 0.4,
+                            hidden: true
+                        },
+                        {
+                            label: 'Cholesterol (mg/dL)',
+                            data: [],
+                            borderColor: '#9b59b6',
+                            backgroundColor: 'rgba(155, 89, 182, 0.1)',
+                            tension: 0.4,
+                            hidden: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+            
+            // Overview chart
+            const overviewChartCanvas = document.getElementById('overview-chart');
+            overviewChart = new Chart(overviewChartCanvas, {
+                type: 'bar',
+                data: {
+                    labels: ['Normal', 'Abnormal'],
+                    datasets: [
+                        {
+                            label: 'Blood Test Results',
+                            data: [0, 0],
+                            backgroundColor: ['rgba(46, 204, 113, 0.7)', 'rgba(231, 76, 60, 0.7)'],
+                            borderColor: ['rgb(46, 204, 113)', 'rgb(231, 76, 60)'],
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Update charts with data
+            updateOverviewChart();
+        }
+        
+        // Update blood test chart
+        function updateBloodTestChart() {
+            if (!currentPatient || !bloodTestChart) return;
+            
+            const patientBloodTests = bloodTests.filter(test => test.patientId === currentPatient.id);
+            
+            if (patientBloodTests.length === 0) {
+                // Reset chart if no data
+                bloodTestChart.data.labels = [];
+                bloodTestChart.data.datasets.forEach(dataset => {
+                    dataset.data = [];
+                });
+                bloodTestChart.update();
+                return;
+            }
+            
+            // Sort tests by date (oldest first)
+            const sortedTests = patientBloodTests.sort((a, b) => new Date(a.testDate) - new Date(b.testDate));
+            
+            // Prepare data
+            const labels = sortedTests.map(test => new Date(test.testDate).toLocaleDateString());
+            const hemoglobinData = sortedTests.map(test => test.hemoglobin);
+            const wbcData = sortedTests.map(test => test.wbc);
+            const glucoseData = sortedTests.map(test => test.glucose);
+            const cholesterolData = sortedTests.map(test => test.cholesterol);
+            
+            // Update chart data
+            bloodTestChart.data.labels = labels;
+            bloodTestChart.data.datasets[0].data = hemoglobinData;
+            bloodTestChart.data.datasets[1].data = wbcData;
+            bloodTestChart.data.datasets[2].data = glucoseData;
+            bloodTestChart.data.datasets[3].data = cholesterolData;
+            
+            // Update chart
+            bloodTestChart.update();
+        }
+        
+        // Update overview chart
+        function updateOverviewChart() {
+            if (!overviewChart) return;
+            
+            let normalCount = 0;
+            let abnormalCount = 0;
+            
+            // Count normal and abnormal blood tests
+            bloodTests.forEach(test => {
+                let isNormal = true;
+                
+                // Check if any parameter is outside normal range
+                if (test.hemoglobin < 12 || test.hemoglobin > 16) isNormal = false;
+                if (test.wbc < 4.5 || test.wbc > 11) isNormal = false;
+                if (test.rbc < 4.2 || test.rbc > 5.8) isNormal = false;
+                if (test.platelets < 150 || test.platelets > 450) isNormal = false;
+                if (test.glucose < 70 || test.glucose > 100) isNormal = false;
+                if (test.cholesterol < 125 || test.cholesterol > 200) isNormal = false;
+                
+                if (isNormal) {
+                    normalCount++;
+                } else {
+                    abnormalCount++;
+                }
+            });
+            
+            // Update chart data
+            overviewChart.data.datasets[0].data = [normalCount, abnormalCount];
+            
+            // Update chart
+            overviewChart.update();
+        }
+        
+        // Update dashboard counts
+        function updateDashboardCounts() {
+            document.getElementById('patient-count').textContent = patients.length;
+            document.getElementById('report-count').textContent = reports.length;
+            document.getElementById('test-count').textContent = bloodTests.length;
+        }
+    </script>
+</body>
+</html>

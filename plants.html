@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicinal Plants Database</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2e7d32;;
+            --secondary-color:  #81c784;;
+            --light-color: #fefee3;
+            --accent-color: #d68c45;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: var(--text-color);;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .navbar {
+            background-color: var(--primary-color);
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/api/placeholder/1200/400');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 20px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .plant-card .card-header {
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: bold;
+        }
+        
+        .disease-card .card-header {
+            background-color: var(--accent-color);
+            color: white;
+            font-weight: bold;
+        }
+        
+        .badge-plant {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .badge-disease {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            margin-top: 30px;
+        }
+        
+        .tab-pane {
+            padding: 20px 0;
+        }
+
+        .plant-detail-container {
+            display: none;
+            padding: 20px;
+        }
+
+        .plant-image {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .search-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .disease-link {
+            cursor: pointer;
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        .disease-link:hover {
+            color: var(--secondary-color);
+        }
+
+        .treatment-method {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--secondary-color);
+            padding: 10px 15px;
+            margin-top: 10px;
+        }
+
+        #backToTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-leaf me-2"></i>AyurWellness
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#plants">Plants</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#diseases">Diseases</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-4">Nature's Pharmacy</h1>
+                    <p class="lead">Discover the healing power of medicinal plants and their applications in treating various ailments.</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="search-container">
+                        <h4 class="mb-3">Find a plant or disease</h4>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search...">
+                            <button class="btn btn-primary" id="searchButton">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs nav-fill mb-4" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="plants-tab" data-bs-toggle="tab" data-bs-target="#plants-pane" type="button">
+                    <i class="fas fa-seedling me-2"></i>Browse Plants
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="diseases-tab" data-bs-toggle="tab" data-bs-target="#diseases-pane" type="button">
+                    <i class="fas fa-heartbeat me-2"></i>Browse by Disease
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            <!-- Plants Tab -->
+            <div class="tab-pane fade show active" id="plants-pane" role="tabpanel">
+                <div class="row" id="plantsContainer"></div>
+            </div>
+
+            <!-- Plant Detail View -->
+            <div id="plantDetailView" class="plant-detail-container bg-white rounded shadow-sm mb-4">
+                <button id="backToPlants" class="btn btn-sm btn-outline-secondary mb-3">
+                    <i class="fas fa-arrow-left me-1"></i> Back to plants
+                </button>
+                <div id="plantDetailContent"></div>
+            </div>
+
+            <!-- Diseases Tab -->
+            <div class="tab-pane fade" id="diseases-pane" role="tabpanel">
+                <div class="row" id="diseasesContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4">About Medicinal Plants</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Medicinal plants have been used for thousands of years in various traditional medicine systems around the world. These plants contain bioactive compounds that can help prevent and treat various diseases.</p>
+                    <p>Our database provides information about common medicinal plants, their therapeutic properties, and the scientific evidence supporting their use.</p>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Disclaimer</h5>
+                            <p class="card-text">The information provided on this website is for educational purposes only and is not intended to replace professional medical advice, diagnosis, or treatment.</p>
+                            <p class="card-text">Always consult with a qualified healthcare provider before using any herbal supplements or starting a new health regimen.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>AyurWellness</h5>
+                    <p>Exploring nature's remedies for better health.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>&copy; 2025 Medicinal Plants Database. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTopBtn" class="btn btn-primary rounded-circle">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Plant Database
+        const plants = [
+            {
+                id: 1,
+                name: "Turmeric (Curcuma longa)",
+                image: "/api/placeholder/600/400",
+                shortDescription: "A bright yellow spice with powerful anti-inflammatory properties.",
+                fullDescription: "Turmeric is a flowering plant of the ginger family. Its rhizomes are used fresh or boiled in water and dried, ground into a deep orange-yellow powder commonly used as a coloring and flavoring agent in many Asian cuisines, especially for curries.",
+                origin: "Native to the Indian subcontinent and Southeast Asia",
+                activeCompounds: ["Curcumin", "Demethoxycurcumin", "Bisdemethoxycurcumin"],
+                diseases: [
+                    {
+                        name: "Inflammation",
+                        description: "Inflammation is a process by which the body's white blood cells protect us from infection with foreign organisms.",
+                        treatment: "Curcumin in turmeric blocks NF-kB, a molecule that travels into the nuclei of cells and triggers genes related to inflammation. It inhibits many molecules known to play major roles in inflammation."
+                    },
+                    {
+                        name: "Arthritis",
+                        description: "A form of joint disorder that involves inflammation of one or more joints.",
+                        treatment: "The anti-inflammatory compounds in turmeric can reduce joint inflammation, pain, and stiffness related to arthritis. Studies show its effectiveness rivals some anti-inflammatory drugs without side effects."
+                    },
+                    {
+                        name: "Digestive Disorders",
+                        description: "Various conditions that affect the digestive tract and interfere with normal digestion.",
+                        treatment: "Turmeric stimulates the gallbladder to produce bile, which helps improve digestion. It also reduces symptoms of bloating and gas. The anti-inflammatory properties help with inflammatory bowel conditions."
+                    }
+                ],
+                preparation: "Can be consumed as a spice in food, taken as a supplement, or brewed into a tea. For medicinal use, it's often combined with black pepper to enhance absorption."
+            },
+            {
+                id: 2,
+                name: "Ginger (Zingiber officinale)",
+                image: "/api/placeholder/600/400",
+                shortDescription: "A flowering plant used as both a culinary spice and medicine.",
+                fullDescription: "Ginger is a flowering plant whose rhizome, ginger root or ginger, is widely used as a spice and a folk medicine. It's a herbaceous perennial which grows annual pseudostems about one meter tall bearing narrow leaf blades.",
+                origin: "Native to southeastern Asia",
+                activeCompounds: ["Gingerol", "Shogaols", "Zingerone"],
+                diseases: [
+                    {
+                        name: "Nausea",
+                        description: "An unpleasant, diffuse sensation of unease and discomfort, often perceived as an urge to vomit.",
+                        treatment: "Ginger has been shown to be effective against nausea caused by motion sickness, morning sickness, and chemotherapy. Compounds like gingerols and shogaols influence the nervous system, digestive tract, and possible receptors in the stomach."
+                    },
+                    {
+                        name: "Common Cold",
+                        description: "A viral infectious disease of the upper respiratory tract.",
+                        treatment: "Ginger helps fight infections and can help boost immunity during cold and flu season. It promotes healthy sweating which helps to detoxify the body and can help reduce symptoms of colds and flu."
+                    },
+                    {
+                        name: "Inflammation",
+                        description: "A process by which the body's white blood cells protect us from infection with foreign organisms.",
+                        treatment: "Gingerol, the main bioactive compound in ginger, has powerful anti-inflammatory and antioxidant effects. It inhibits the formation of inflammatory cytokines."
+                    }
+                ],
+                preparation: "Can be used fresh, dried, powdered, or as an oil or juice. It's commonly added to foods and beverages or taken as a supplement."
+            },
+            {
+                id: 3,
+                name: "Echinacea (Echinacea purpurea)",
+                image: "/api/placeholder/600/400",
+                shortDescription: "A group of herbaceous flowering plants that strengthen the immune system.",
+                fullDescription: "Echinacea is a genus of herbaceous flowering plants in the daisy family. It has been used in traditional medicine by Native Americans for centuries, primarily to treat infections and wounds.",
+                origin: "Native to eastern and central North America",
+                activeCompounds: ["Alkamides", "Caffeic acid derivatives", "Polysaccharides"],
+                diseases: [
+                    {
+                        name: "Common Cold",
+                        description: "A viral infectious disease of the upper respiratory tract.",
+                        treatment: "Echinacea increases the number and activity of immune system cells including white blood cells, which fight infections. Research suggests it may reduce the chance of catching a cold by more than 50% and shorten its duration by about 1.4 days."
+                    },
+                    {
+                        name: "Upper Respiratory Infections",
+                        description: "Infections that affect the upper respiratory tract including the nose, sinuses, pharynx, or larynx.",
+                        treatment: "Echinacea's immune-boosting properties help fight off the viruses and bacteria that cause respiratory infections. It contains alkylamides that reduce inflammation in bronchial tubes and lungs."
+                    },
+                    {
+                        name: "Skin Infections",
+                        description: "Diseases of the skin caused by pathogenic bacteria, viruses, fungi or parasites.",
+                        treatment: "When applied topically, echinacea can help with wound healing and reduce inflammation. It stimulates new tissue growth and reduces the chance of infection in wounds."
+                    }
+                ],
+                preparation: "Available as tablets, tinctures, extracts, and teas. For best results, start taking it at the first sign of illness."
+            },
+            {
+                id: 4,
+                name: "Aloe Vera (Aloe barbadensis miller)",
+                image: "/api/placeholder/600/400",
+                shortDescription: "A succulent plant with gel-filled leaves used for skin conditions and digestive health.",
+                fullDescription: "Aloe vera is a succulent plant species of the genus Aloe. It's been used for thousands of years for medicinal purposes. The plant has thick, fleshy leaves that contain gel and latex, which are used for medicines.",
+                origin: "Native to Northern Africa",
+                activeCompounds: ["Acemannan", "Aloin", "Anthraquinones"],
+                diseases: [
+                    {
+                        name: "Burns and Wounds",
+                        description: "Skin injuries caused by heat, electricity, chemicals, radiation, or friction.",
+                        treatment: "Aloe vera gel contains glycoproteins that reduce pain and inflammation while promoting healing. Polysaccharides stimulate skin growth and repair. It increases collagen synthesis and skin elasticity, accelerating wound healing."
+                    },
+                    {
+                        name: "Constipation",
+                        description: "A condition in which there is difficulty in emptying the bowels, usually associated with hardened feces.",
+                        treatment: "Aloe vera latex contains compounds called anthraquinones that have strong laxative effects. It increases intestinal water content, stimulates mucus secretion, and increases intestinal peristalsis."
+                    },
+                    {
+                        name: "Diabetes",
+                        description: "A disease in which the body's ability to produce or respond to insulin is impaired.",
+                        treatment: "Some studies suggest aloe vera may help lower blood sugar by enhancing insulin sensitivity. It contains compounds that can help in the uptake of glucose into cells, thereby lowering blood glucose levels."
+                    }
+                ],
+                preparation: "The gel can be applied directly to the skin for burns and wounds. For internal use, aloe vera juice or supplements are available."
+            },
+            {
+                id: 5,
+                name: "Ginkgo (Ginkgo biloba)",
+                image: "/api/placeholder/600/400",
+                shortDescription: "One of the oldest living tree species with leaves used to improve circulation and brain function.",
+                fullDescription: "Ginkgo biloba, commonly known as ginkgo or gingko, is the only living species in the division Ginkgophyta. It is one of the oldest living tree species, with some specimens believed to be more than 2,500 years old.",
+                origin: "Native to China",
+                activeCompounds: ["Flavonoids", "Terpenoids", "Ginkgolides"],
+                diseases: [
+                    {
+                        name: "Cognitive Decline",
+                        description: "A reduction in cognitive abilities including memory, attention, and problem-solving skills.",
+                        treatment: "Ginkgo improves blood circulation to the brain and acts as an antioxidant. These effects may protect brain cells from damage, potentially slowing the progression of dementia and Alzheimer's disease. It may also help with memory enhancement and cognitive function."
+                    },
+                    {
+                        name: "Anxiety",
+                        description: "A feeling of worry, nervousness, or unease about something with an uncertain outcome.",
+                        treatment: "Ginkgo may help regulate neurotransmitters and reduce stress hormones. Its antioxidant properties might reduce the damaging effects of oxidative stress on brain cells, which is linked to anxiety disorders."
+                    },
+                    {
+                        name: "Poor Circulation",
+                        description: "Reduced blood flow to extremities or specific organs.",
+                        treatment: "Ginkgo contains terpenoids that improve circulation by dilating blood vessels and reducing the stickiness of platelets. This can help with conditions like intermittent claudication (leg pain when walking) and Raynaud's syndrome."
+                    }
+                ],
+                preparation: "Typically taken as a supplement in the form of tablets, capsules, liquid extracts, or teas made from dried leaves."
+            },
+            {
+                id: 6,
+                name: "Valerian (Valeriana officinalis)",
+                image: "/api/placeholder/600/400",
+                shortDescription: "A flowering plant whose roots are used for sleep and anxiety disorders.",
+                fullDescription: "Valerian is a perennial flowering plant native to Europe and Asia. Its root has been used as a herbal remedy since ancient times, particularly for sleep disorders, anxiety, and nervous restlessness.",
+                origin: "Native to Europe and parts of Asia",
+                activeCompounds: ["Valerenic Acid", "Isovaleric Acid", "Hesperidin"],
+                diseases: [
+                    {
+                        name: "Insomnia",
+                        description: "A sleep disorder characterized by difficulty falling asleep or staying asleep.",
+                        treatment: "Valerian contains valerenic acid that inhibits the breakdown of GABA in the brain, resulting in feelings of tranquility and calmness. This promotes better sleep without the side effects of conventional sleeping pills."
+                    },
+                    {
+                        name: "Anxiety",
+                        description: "A feeling of worry, nervousness, or unease about something with an uncertain outcome.",
+                        treatment: "Valerian works as a mild sedative, increasing GABA levels in the brain. GABA is an inhibitory neurotransmitter that reduces nerve cell activity and helps regulate nerve cells from becoming too excited, creating a calming effect."
+                    },
+                    {
+                        name: "Menstrual Cramps",
+                        description: "Pain in the lower abdomen that occurs during menstruation.",
+                        treatment: "Valerian can help relax the smooth muscles of the uterus, reducing the painful contractions that cause menstrual cramps. Its sedative effects may also help reduce the perception of pain."
+                    }
+                ],
+                preparation: "Available as capsules, tablets, tinctures, and teas. For sleep disorders, take 30 minutes to two hours before bedtime."
+            }
+        ];
+
+        // Disease Database
+        const diseases = [
+            {
+                id: 1,
+                name: "Inflammation",
+                description: "A process by which the body's white blood cells protect us from infection with foreign organisms, but can become problematic when chronic.",
+                associatedPlants: [1, 2], // IDs of plants that treat this disease
+                symptoms: ["Redness", "Swelling", "Heat", "Pain", "Loss of function"],
+                riskFactors: ["Autoimmune disorders", "Exposure to irritants", "Chronic stress", "Poor diet", "Lack of exercise"]
+            },
+            {
+                id: 2,
+                name: "Common Cold",
+                description: "A viral infectious disease of the upper respiratory tract which primarily affects the nose, throat, sinuses, and upper airways.",
+                associatedPlants: [2, 3], // IDs of plants that treat this disease
+                symptoms: ["Runny or stuffy nose", "Sore throat", "Cough", "Congestion", "Slight body aches", "Mild headache", "Sneezing", "Low-grade fever"],
+                riskFactors: ["Weakened immune system", "Season (winter and rainy seasons)", "Age (children and older adults)", "Smoking", "Exposure to infected people"]
+            },
+            {
+                id: 3,
+                name: "Arthritis",
+                description: "Inflammation of one or more joints, causing pain and stiffness that can worsen with age.",
+                associatedPlants: [1], // IDs of plants that treat this disease
+                symptoms: ["Joint pain", "Stiffness", "Decreased range of motion", "Swelling", "Redness around joints"],
+                riskFactors: ["Family history", "Age", "Gender (more common in women)", "Previous joint injury", "Obesity"]
+            },
+            {
+                id: 4,
+                name: "Digestive Disorders",
+                description: "Various conditions that affect the digestive tract and interfere with normal digestion and absorption of nutrients.",
+                associatedPlants: [1, 2], // IDs of plants that treat this disease
+                symptoms: ["Abdominal pain or cramps", "Bloating", "Gas", "Constipation", "Diarrhea", "Heartburn", "Nausea", "Vomiting"],
+                riskFactors: ["Diet high in processed foods", "Stress", "Medication side effects", "Infections", "Other underlying conditions"]
+            },
+            {
+                id: 5,
+                name: "Anxiety",
+                description: "A feeling of worry, nervousness, or unease about something with an uncertain outcome.",
+                associatedPlants: [5, 6], // IDs of plants that treat this disease
+                symptoms: ["Feeling nervous or tense", "Increased heart rate", "Rapid breathing", "Sweating", "Trembling", "Feeling weak or tired", "Trouble concentrating", "Sleep problems"],
+                riskFactors: ["Trauma", "Stress", "Personality factors", "Other mental health disorders", "Certain medical conditions", "Substance abuse"]
+            },
+            {
+                id: 6,
+                name: "Insomnia",
+                description: "A sleep disorder characterized by difficulty falling asleep or staying asleep, or waking up too early and not being able to get back to sleep.",
+                associatedPlants: [6], // IDs of plants that treat this disease
+                symptoms: ["Difficulty falling asleep", "Waking up during the night", "Waking up too early", "Not feeling well-rested", "Daytime tiredness", "Irritability", "Difficulty focusing"],
+                riskFactors: ["Stress", "Irregular sleep schedule", "Mental health disorders", "Physical conditions or pain", "Medications", "Caffeine, nicotine, or alcohol"]
+            },
+            {
+                id: 7,
+                name: "Burns and Wounds",
+                description: "Skin injuries caused by heat, electricity, chemicals, radiation, or friction.",
+                associatedPlants: [4], // IDs of plants that treat this disease
+                symptoms: ["Pain", "Redness", "Swelling", "Blistering", "Peeling skin", "White or charred skin (in severe burns)"],
+                riskFactors: ["Exposure to fire or hot objects", "Chemical exposure", "Electrical accidents", "Radiation exposure", "Friction"]
+            },
+            {
+                id: 8,
+                name: "Cognitive Decline",
+                description: "A reduction in cognitive abilities including memory, attention, and problem-solving skills, which may be associated with aging or certain conditions.",
+                associatedPlants: [5], // IDs of plants that treat this disease
+                symptoms: ["Memory loss", "Confusion", "Difficulty concentrating", "Reduced ability to make decisions or solve problems", "Difficulty with language and comprehension", "Changes in mood or behavior"],
+                riskFactors: ["Age", "Family history", "Down syndrome", "Head trauma", "Cardiovascular disease", "Chronic conditions like diabetes or high blood pressure"]
+            }
+        ];
+
+        // Function to show plant details
+        function showPlantDetail(plantId) {
+            const plant = plants.find(p => p.id === plantId);
+            
+            if (!plant) return;
+            
+            // Hide plants container and show detail view
+            document.getElementById('plantsContainer').parentElement.classList.add('d-none');
+            document.getElementById('plantDetailView').style.display = 'block';
+            
+            // Populate plant detail content
+            let html = `
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="${plant.image}" alt="${plant.name}" class="img-fluid rounded">
+                        <h2 class="mt-3">${plant.name}</h2>
+                        <p class="text-muted">${plant.origin}</p>
+                        <div class="mt-3">
+                            <h5>Active Compounds</h5>
+                            <ul class="list-group">
+                                ${plant.activeCompounds.map(compound => 
+                                    <li class="list-group-item">${compound}</li>
+                                ).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="mb-4">
+                            <h4>Description</h4>
+                            <p>${plant.fullDescription}</p>
+                        </div>
+                        <div class="mb-4">
+                            <h4>Medicinal Uses</h4>
+                            <div class="accordion" id="accordionDiseases">
+                                ${plant.diseases.map((disease, index) => `
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button ${index === 0 ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${plant.id}-${index}">
+                                                ${disease.name}
+                                            </button>
+                                        </h2>
+                                        <div id="collapse${plant.id}-${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}">
+                                            <div class="accordion-body">
+                                                <p><strong>About:</strong> ${disease.description}</p>
+                                                <div class="treatment-method">
+                                                    <p><strong>How it treats:</strong> ${disease.treatment}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div>
+                            <h4>Preparation Methods</h4>
+                            <p>${plant.preparation}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('plantDetailContent').innerHTML = html;
+        }
+
+        // Function to display plants
+        function displayPlants() {
+            const plantsContainer = document.getElementById('plantsContainer');
+            let html = '';
+            
+            plants.forEach(plant => {
+                html += `
+                    <div class="col-md-4">
+                        <div class="card plant-card h-100">
+                            <div class="card-header">${plant.name}</div>
+                            <img src="${plant.image}" class="card-img-top plant-image" alt="${plant.name}">
+                            <div class="card-body">
+                                <p>${plant.shortDescription}</p>
+                                <h6 class="mt-3">Helps with:</h6>
+                                <div>
+                                    ${plant.diseases.map(disease => 
+                                        <span class="badge badge-plant me-1 mb-1">${disease.name}</span>
+                                    ).join('')}
+                                </div>
+                            </div>
+                            <div class="card-footer bg-transparent border-0">
+                                <button class="btn btn-primary w-100 view-plant-btn" data-plant-id="${plant.id}">
+                                    Learn More
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            plantsContainer.innerHTML = html;
+            
+            // Add event listeners to plant buttons
+            document.querySelectorAll('.view-plant-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    showPlantDetail(parseInt(this.getAttribute('data-plant-id')));
+                });
+            });
+        }
+
+        // Function to display diseases
+function displayDiseases() {
+    const diseasesContainer = document.getElementById('diseasesContainer');
+    let html = '';
+    
+    diseases.forEach(disease => {
+        const treatmentPlants = plants.filter(plant => 
+            disease.associatedPlants.includes(plant.id)
+        );
+        
+        html += `
+            <div class="col-md-6 mb-4">
+                <div class="card disease-card h-100">
+                    <div class="card-header">${disease.name}</div>
+                    <div class="card-body">
+                        <p>${disease.description}</p>
+                        
+                        <h6>Treatment Plants:</h6>
+                        <ul class="treatment-plants-list">
+                            ${treatmentPlants.length > 0 ? 
+                                treatmentPlants.map(plant => `
+                                    <li>
+                                        <a href="#" onclick="showPlantDetails(${plant.id}); return false;">
+                                            ${plant.name}
+                                        </a>
+                                    </li>
+                                `).join('') : 
+                                '<li>No known treatment plants</li>'
+                            }
+                        </ul>
+                        
+                        <h6>Symptoms:</h6>
+                        <ul class="symptoms-list">
+                            ${disease.symptoms ? 
+                                disease.symptoms.map(symptom => `<li>${symptom}</li>`).join('') : 
+                                '<li>No symptoms listed</li>'
+                            }
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary btn-sm" onclick="showDiseaseDetails(${disease.id})">
+                            More Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    diseasesContainer.innerHTML = html;
+}
+
+// Helper function to show plant details (you would implement this separately)
+function showPlantDetails(plantId) {
+    // Find the plant by ID
+    const plant = plants.find(p => p.id === plantId);
+    
+    // Display plant details in a modal or dedicated section
+    if (plant) {
+        // Implementation depends on your UI structure
+        console.log(`Showing details for plant: ${plant.name}`);
+        // Example: Could trigger a modal or navigate to plant detail page
+    }
+}
+
+// Helper function to show disease details (you would implement this separately)
+function showDiseaseDetails(diseaseId) {
+    // Find the disease by ID
+    const disease = diseases.find(d => d.id === diseaseId);
+    
+    // Display disease details in a modal or dedicated section
+    if (disease) {
+        // Implementation depends on your UI structure
+        console.log(`Showing details for disease: ${disease.name}`);
+        // Example: Could show a modal with more detailed information
+    }
+}

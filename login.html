@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Signup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #66ea68, #fefefe);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+            position: relative;
+            overflow: hidden;
+            width: 768px;
+            max-width: 100%;
+            min-height: 480px;
+        }
+
+        .form-container {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            transition: all 0.6s ease-in-out;
+        }
+
+        .sign-in-container {
+            left: 0;
+            width: 50%;
+            z-index: 2;
+        }
+
+        .sign-up-container {
+            left: 0;
+            width: 50%;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .container.right-panel-active .sign-in-container {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        .container.right-panel-active .sign-up-container {
+            transform: translateX(100%);
+            opacity: 1;
+            z-index: 5;
+        }
+
+        form {
+            background-color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 0 50px;
+            height: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-weight: bold;
+            margin: 0;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 14px;
+            font-weight: 100;
+            line-height: 20px;
+            letter-spacing: 0.5px;
+            margin: 20px 0 30px;
+        }
+
+        .social-container {
+            margin: 20px 0;
+        }
+
+        .social-container a {
+            border: 1px solid #DDDDDD;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 5px;
+            height: 40px;
+            width: 40px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .social-container a:hover {
+            background-color: #f3f3f3;
+        }
+
+        input {
+            background-color: #eee;
+            border: none;
+            padding: 12px 15px;
+            margin: 8px 0;
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        button {
+            border-radius: 20px;
+            border: 1px solid #764ba2;
+            background-color: #764ba2;
+            color: #FFFFFF;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 12px 45px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: transform 80ms ease-in;
+            cursor: pointer;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        button.ghost {
+            background-color: transparent;
+            border-color: #FFFFFF;
+        }
+
+        .overlay-container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            transition: transform 0.6s ease-in-out;
+            z-index: 100;
+        }
+
+        .container.right-panel-active .overlay-container {
+            transform: translateX(-100%);
+        }
+
+        .overlay {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: 0 0;
+            color: #FFFFFF;
+            position: relative;
+            left: -100%;
+            height: 100%;
+            width: 200%;
+            transform: translateX(0);
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .container.right-panel-active .overlay {
+            transform: translateX(50%);
+        }
+
+        .overlay-panel {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 0 40px;
+            text-align: center;
+            top: 0;
+            height: 100%;
+            width: 50%;
+            transform: translateX(0);
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .overlay-left {
+            transform: translateX(-20%);
+        }
+
+        .container.right-panel-active .overlay-left {
+            transform: translateX(0);
+        }
+
+        .overlay-right {
+            right: 0;
+            transform: translateX(0);
+        }
+
+        .container.right-panel-active .overlay-right {
+            transform: translateX(20%);
+        }
+
+        .error {
+            color: #ff3860;
+            font-size: 12px;
+            margin-top: 5px;
+            text-align: left;
+            width: 100%;
+            display: none;
+        }
+
+        .input-group {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form id="signupForm">
+                <h1>Create Account</h1>
+                <div class="social-container">
+                    <a href="#"><i>f</i></a>
+                    <a href="#"><i>G</i></a>
+                    <a href="#"><i>in</i></a>
+                </div>
+                <p>or use your email for registration</p>
+                <div class="input-group">
+                    <input type="text" id="signup-name" placeholder="Name" required />
+                    <div class="error" id="signup-name-error">Please enter your name</div>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="signup-email" placeholder="Email" required />
+                    <div class="error" id="signup-email-error">Please enter a valid email</div>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="signup-password" placeholder="Password" required />
+                    <div class="error" id="signup-password-error">Password must be at least 6 characters</div>
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form id="loginForm">
+                <h1>Sign in</h1>
+                <div class="social-container">
+                    <a href="#"><i>f</i></a>
+                    <a href="#"><i>G</i></a>
+                    <a href="#"><i>in</i></a>
+                </div>
+                <p>or use your account</p>
+                <div class="input-group">
+                    <input type="email" id="login-email" placeholder="Email" required />
+                    <div class="error" id="login-email-error">Please enter a valid email</div>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login-password" placeholder="Password" required />
+                    <div class="error" id="login-password-error">Please enter your password</div>
+                </div>
+                <a href="#" style="margin: 15px 0; color: #333; text-decoration: none; font-size: 14px;">Forgot your password?</a>
+                <button type="submit">Sign In</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Enter your personal details and start journey with us</p>
+                    <button class="ghost" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const signUpButton = document.getElementById('signUp');
+            const signInButton = document.getElementById('signIn');
+            const container = document.getElementById('container');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+
+            // Toggle between sign up and sign in panels
+            signUpButton.addEventListener('click', () => {
+                container.classList.add('right-panel-active');
+            });
+
+            signInButton.addEventListener('click', () => {
+                container.classList.remove('right-panel-active');
+            });
+
+            // Login form validation
+            loginForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const email = document.getElementById('login-email');
+                const password = document.getElementById('login-password');
+                const emailError = document.getElementById('login-email-error');
+                const passwordError = document.getElementById('login-password-error');
+                
+                let isValid = true;
+                
+                // Reset errors
+                emailError.style.display = 'none';
+                passwordError.style.display = 'none';
+                
+                // Validate email
+                if (!email.value || !validateEmail(email.value)) {
+                    emailError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Validate password
+                if (!password.value) {
+                    passwordError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                if (isValid) {
+                    // If form is valid, you would typically send the data to your server here
+                    alert('Login successful!');
+                    // Simulate form submission - normally you'd use fetch() or axios here
+                    console.log('Login form submitted:', {
+                        email: email.value,
+                        password: password.value
+                    });
+                }
+            });
+
+            // Signup form validation
+            signupForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const name = document.getElementById('signup-name');
+                const email = document.getElementById('signup-email');
+                const password = document.getElementById('signup-password');
+                const nameError = document.getElementById('signup-name-error');
+                const emailError = document.getElementById('signup-email-error');
+                const passwordError = document.getElementById('signup-password-error');
+                
+                let isValid = true;
+                
+                // Reset errors
+                nameError.style.display = 'none';
+                emailError.style.display = 'none';
+                passwordError.style.display = 'none';
+                
+                // Validate name
+                if (!name.value.trim()) {
+                    nameError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Validate email
+                if (!email.value || !validateEmail(email.value)) {
+                    emailError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Validate password
+                if (!password.value || password.value.length < 6) {
+                    passwordError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                if (isValid) {
+                    // If form is valid, you would typically send the data to your server here
+                    alert('Signup successful!');
+                    // Simulate form submission - normally you'd use fetch() or axios here
+                    console.log('Signup form submitted:', {
+                        name: name.value,
+                        email: email.value,
+                        password: password.value
+                    });
+                }
+            });
+
+            // Helper function to validate email format
+            function validateEmail(email) {
+                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(email).toLowerCase());
+            }
+        });
+    </script>
+</body>
+</html>

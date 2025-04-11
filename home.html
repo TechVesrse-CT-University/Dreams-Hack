@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayur Wellness - Medicinal Plants & Ayurvedic Treatments</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --secondary-color: #81c784;
+            --accent-color: #ffd54f;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .navbar-custom {
+            background-color: var(--primary-color);
+        }
+
+        .navbar-custom .navbar-brand,
+        .navbar-custom .nav-link {
+            color: white;
+        }
+
+        .navbar-custom .nav-link:hover {
+            color: var(--accent-color);
+        }
+
+        .hero-section {
+            /* background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/api/placeholder/1200/600') center/cover; */
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            background-image: url(India_Ayush_medical_treatments.webp);
+            /* height: 500px;
+            width: 1200px; */
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero-section p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .btn-outline-light:hover {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border-color: var(--accent-color);
+        }
+
+        .section-title {
+            position: relative;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        .feature-box {
+            padding: 2rem;
+            text-align: center;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .plant-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+
+        .plant-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .plant-img {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .testimonial-section {
+            background-color: var(--light-bg);
+            padding: 80px 0;
+        }
+
+        .testimonial-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .rating {
+            color: #ffc107;
+            margin-bottom: 1rem;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        .footer-links h5 {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            color: white;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 30px;
+        }
+
+        /* Plant Database Styles */
+        .filter-section {
+            background-color: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .plant-list-card {
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+        }
+
+        .plant-detail-img {
+            max-height: 400px;
+            object-fit: contain;
+        }
+
+        .uses-list li,
+        .benefits-list li {
+            margin-bottom: 0.5rem;
+        }
+
+        .medicine-badge {
+            background-color: var(--secondary-color);
+            color: white;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 13px;
+            color: var(--primary-color);
+        }
+
+        /* Blog Styles */
+        .blog-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .blog-img {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .blog-content {
+            padding: 1.5rem;
+        }
+
+        .blog-meta {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Modal */
+        .plant-modal .modal-header {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .plant-modal .close {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <i class="fas fa-leaf me-2"></i>Ayur Wellness
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="login.html">LogIn</a>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#plants">Medicinal Plants</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#treatments">Treatments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#database">Plant Database</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="yourdoc.html">YourDoc</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="yog.html">CarYo</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="#blog">Blog</a> -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="plants.html">PlantCure</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <h1>Nature's Healing Power</h1>
+            <p>Discover the ancient wisdom of Ayurveda and the healing properties of medicinal plants to restore balance
+                and promote holistic wellbeing.</p>
+            <div>
+                <a href="#plants" class="btn btn-primary btn-lg me-3">Explore Plants</a>
+                <a href="#contact" class="btn btn-outline-light btn-lg">Get In Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <h2 class="section-title">About Ayur Wellness</h2>
+            <div class="row">
+                <div class="col-lg-6">
+                    <h3>Our Mission</h3>
+                    <p>At Ayur Wellness, we are dedicated to reviving and promoting the ancient healing science of
+                        Ayurveda. Our mission is to make this time-tested knowledge accessible to everyone, helping
+                        people find natural solutions to modern health challenges.</p>
+                    <p>We believe in the power of medicinal plants and natural remedies to heal the body, mind, and
+                        spirit. Our comprehensive database of Ayurvedic plants and treatments is designed to educate and
+                        empower you on your journey to holistic health.</p>
+                    <p>Through scientific research and traditional wisdom, we aim to bridge the gap between conventional
+                        medicine and Ayurveda, offering a complementary approach to wellness that addresses the root
+                        causes of health issues rather than just the symptoms.</p>
+                </div>
+                <div class="col-lg-6">
+                    <img src="WhatsApp Image 2025-04-11 at 02.15.39_69141f11.jpg" alt="Ayurvedic herbs and preparations"
+                        class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box bg-white">
+                        <div class="feature-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h4>Medicinal Plant Database</h4>
+                        <p>Access detailed information on hundreds of medicinal plants, their properties, uses, and the
+                            Ayurvedic medicines they're found in.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box bg-white">
+                        <div class="feature-icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h4>Ayurvedic Treatments</h4>
+                        <p>Learn about traditional Ayurvedic treatments and therapies for various health conditions,
+                            from common ailments to chronic diseases.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box bg-white">
+                        <div class="feature-icon">
+                            <i class="fas fa-mortar-pestle"></i>
+                        </div>
+                        <h4>Medicinal Formulations</h4>
+                        <p>Discover the composition and benefits of Ayurvedic medicines, formulations, and preparations
+                            used for different health concerns.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Medicinal Plants Section -->
+    <section id="plants" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Popular Medicinal Plants</h2>
+           
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="plant-card">
+                        <img src="WhatsApp Image 2025-04-11 at 02.16.53_897faa01.jpg" class="plant-img w-100"
+                            alt="Ashwagandha">
+                        <div class="p-3">
+                            <h4>Ashwagandha</h4>
+                            <p class="text-muted">Withania somnifera</p>
+                            <p>A powerful adaptogen that helps the body manage stress and promotes overall vitality.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-success">Stress Relief</span>
+                                <a href="#" class="btn btn-sm btn-outline-primary" data-plant="ashwagandha">Learn
+                                    More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="plant-card">
+                        <img src="turmeric.jpeg.jpg" class="plant-img w-100" alt="Turmeric">
+                        <div class="p-3">
+                            <h4>Turmeric</h4>
+                            <p class="text-muted">Curcuma longa</p>
+                            <p>A powerful anti-inflammatory and antioxidant herb widely used in Ayurvedic medicine.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-success">Anti-inflammatory</span>
+                                <a href="#" class="btn btn-sm btn-outline-primary" data-plant="turmeric">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="plant-card">
+                        <img src="WhatsApp Image 2025-04-11 at 02.15.59_1212c9e6.jpg" class="plant-img w-100"
+                            alt="Tulsi">
+                        <div class="p-3">
+                            <h4>Tulsi (Holy Basil)</h4>
+                            <p class="text-muted">Ocimum sanctum</p>
+                            <p>Revered as "The Queen of Herbs" in Ayurveda for its numerous health benefits.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-success">Immune Support</span>
+                                <a href="#" class="btn btn-sm btn-outline-primary" data-plant="tulsi">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="text-center mt-4">
+                <a href="#database" class="btn btn-primary">Explore All Plants</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Treatments Section -->
+    <section id="treatments" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Ayurvedic Treatments</h2>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <img src="WhatsApp Image 2025-04-11 at 02.18.11_fb1bd5ec.jpg" class="card-img-top"
+                            alt="Panchakarma">
+                        <div class="card-body">
+                            <h5 class="card-title">Panchakarma</h5>
+                            <p class="card-text">A detoxification therapy that cleanses the body of toxins and restores
+                                balance to the doshas.</p>
+                            <a href="#" class="btn btn-outline-primary btn-sm">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <img src="WhatsApp Image 2025-04-11 at 02.17.22_474bc4c7.jpg" class="card-img-top"
+                            alt="Abhyanga">
+                        <div class="card-body">
+                            <h5 class="card-title">Abhyanga</h5>
+                            <p class="card-text">A therapeutic full-body massage with warm herbal oils to nourish
+                                tissues and remove toxins.</p>
+                            <a href="#" class="btn btn-outline-primary btn-sm">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <img src="WhatsApp Image 2025-04-11 at 02.18.59_1066c06c.jpg" class="card-img-top"
+                            alt="Shirodhara">
+                        <div class="card-body">
+                            <h5 class="card-title">Shirodhara</h5>
+                            <p class="card-text">A relaxing therapy that involves pouring warm oil in a steady stream on
+                                the forehead.</p>
+                            <a href="#" class="btn btn-outline-primary btn-sm">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <img src="3-12.jpg" class="card-img-top" alt="Nasya">
+                        <div class="card-body">
+                            <h5 class="card-title">Nasya</h5>
+                            <p class="card-text">A nasal administration of herbal oils, powders, or pastes to cleanse
+                                the head and neck region.</p>
+                            <a href="#" class="btn btn-outline-primary btn-sm">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Database Section -->
+    <section id="database" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Medicinal Plant Database</h2>
+            <div class="filter-section">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="search-box">
+                            <input type="text" id="plantSearch" class="form-control" placeholder="Search plants...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <select id="categoryFilter" class="form-select">
+                            <option value="">All Categories</option>
+                            <option value="herb">Herbs</option>
+                            <option value="shrub">Shrubs</option>
+                            <option value="tree">Trees</option>
+                            <option value="root">Roots</option>
+                            <option value="fruit">Fruits</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <select id="conditionFilter" class="form-select">
+                            <option value="">All Health Conditions</option>
+                            <option value="digestive">Digestive Issues</option>
+                            <option value="respiratory">Respiratory Problems</option>
+                            <option value="skin">Skin Conditions</option>
+                            <option value="stress">Stress & Anxiety</option>
+                            <option value="immune">Immune Support</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="plantList">
+                <!-- Plants will be dynamically loaded here -->
+            </div>
+
+            <div id="pagination" class="mt-4 text-center">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonial-section">
+        <div class="container">
+            <h2 class="section-title">What Our Users Say</h2>
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="testimonial-card">
+                        <img src="/api/placeholder/80/80" alt="User" class="testimonial-img">
+                        <h5>Priya Sharma</h5>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"The medicinal plant database has been invaluable in my journey to natural healing. I've
+                            found effective remedies for my chronic digestive issues through this platform."</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="testimonial-card">
+                        <img src="/api/placeholder/80/80" alt="User" class="testimonial-img">
+                        <h5>Rahul Gupta</h5>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p>"As a practitioner of Ayurveda, I frequently refer to this website for detailed information
+                            on medicinal plants. The comprehensive data has enhanced my practice significantly."</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="testimonial-card">
+                        <img src="/api/placeholder/80/80" alt="User" class="testimonial-img">
+                        <h5>Anita Desai</h5>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"I was skeptical about Ayurveda at first, but the scientific approach of this platform
+                            convinced me to try these natural remedies. My health has improved tremendously!"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Blog Section -->
+    <section id="blog" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Latest Articles</h2>
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="blog-card">
+                        <img src="/api/placeholder/400/250" class="blog-img w-100" alt="Blog Image">
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="far fa-calendar-alt me-1"></i> March 15, 2025</span>
+                                <span class="ms-3"><i class="far fa-user me-1"></i> Dr. Ayush Patel</span>
+                            </div>
+                            <h4>The Power of Adaptogenic Herbs in Managing Modern Stress</h4>
+                            <p>Discover how adaptogenic herbs like Ashwagandha and Holy Basil can help your body adapt
+                                to stress and maintain balance in today's hectic world.</p>
+                            <a href="#" class="btn btn-outline-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="blog-card">
+                        <img src="/api/placeholder/400/250" class="blog-img w-100" alt="Blog Image">
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="far fa-calendar-alt me-1"></i> March 8, 2025</span>
+                                <span class="ms-3"><i class="far fa-user me-1"></i> Dr. Meera Singh</span>
+                            </div>
+                            <h4>Ayurvedic Approach to Digestive Health: Beyond Symptoms</h4>
+                            <p>Learn how Ayurveda addresses the root causes of digestive disorders and offers holistic
+                                solutions for long-term gut health.</p>
+                            <a href="#" class="btn btn-outline-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="blog-card">
+                        <img src="/api/placeholder/400/250" class="blog-img w-100" alt="Blog Image">
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="far fa-calendar-alt me-1"></i> February 28, 2025</span>
+                                <span class="ms-3"><i class="far fa-user me-1"></i> Dr. Vikram Mehta</span>
+                            </div>
+                            <h4>Seasonal Herbs: Aligning Your Diet with Nature's Rhythm</h4>
+                            <p>Explore the Ayurvedic concept of seasonal eating and discover which herbs and plants to
+                                incorporate in your diet throughout the year.</p>
+                            <a href="#" class="btn btn-outline-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="#" class="btn btn-primary">View All Articles</a>
+            </div>
+        </div>
+    </section>
+   
+    <!-- Contact Section -->
+    <section id="contact" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h4 class="mb-4">Send Us a Message</h4>
+                            <form id="contactForm">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Your Name</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="subject" class="form-label">Subject</label>
+                                    <input type="text" class="form-control" id="subject">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Message</label>
+                                    <textarea class="form-control" id="message" rows="5" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Send Message</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <h4 class="mb-4">Contact Information</h4>
+                            <div class="d-flex mb-3">
+                                <div class="me-3">
+                                    <i class="fas fa-map-marker-alt text-primary fs-4"></i>
+                                </div>
+                                <div>
+                                    <h5>Our Location</h5>
+                                    <p class="mb-0">123 Ayurvedic lane<br>Jalandhar, 140011, India</p>
+                                </div>
+                            </div>
+                           

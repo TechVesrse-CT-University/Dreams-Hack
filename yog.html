@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yoga Asanas Guide</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --secondary-color: #81c784;
+            --accent-color: #ffd54f;
+            --light-color: #f5f5f5;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            background-color: var(--primary-color);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: white !important;
+        }
+
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/api/placeholder/1200/600');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 120px 0;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .category-title {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .asana-detail {
+            display: none;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            background-color: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 50%;
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--secondary-color);
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px 0;
+        }
+
+        .condition-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .warning-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: #f44336;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .benefit-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: #4caf50;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        #search-results {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .filter-btn {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-leaf me-2"></i>Ayur Wellness
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#asana-categories">Asana Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#health-conditions">Health Conditions</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="#about">About Yoga</a>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="container">
+            <h1>Discover the Healing Power of Yoga</h1>
+            <p class="lead mb-4">Explore yoga poses for various health conditions with detailed guidelines</p>
+            <div class="search-container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="input-group mb-3">
+                            <input type="text" id="search-input" class="form-control form-control-lg"
+                                placeholder="Search for asanas or health conditions...">
+                            <button class="btn btn-primary" type="button" id="search-button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Results Section (Hidden by default) -->
+    <section class="py-5 bg-light" id="search-results-section" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">Search Results</h2>
+            <div class="row" id="search-results">
+                <!-- Search results will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Asana Categories Section -->
+    <section class="py-5" id="asana-categories">
+        <div class="container">
+            <h2 class="section-title">Yoga Asana Categories</h2>
+
+            <div class="mb-4 text-center">
+                <button class="btn btn-outline-secondary filter-btn active" data-filter="all">All</button>
+                <button class="btn btn-outline-secondary filter-btn" data-filter="standing">Standing</button>
+                <button class="btn btn-outline-secondary filter-btn" data-filter="seated">Seated</button>
+                <button class="btn btn-outline-secondary filter-btn" data-filter="prone">Prone</button>
+                <button class="btn btn-outline-secondary filter-btn" data-filter="supine">Supine</button>
+                <button class="btn btn-outline-secondary filter-btn" data-filter="balance">Balance</button>
+                <button class="btn btn-outline-secondary filter-btn" data-filter="twist">Twists</button>
+                <button class="btn btn-outline-secondary filter-btn" data-filter="inversion">Inversions</button>
+                <button class="btn btn-outline-secondary filter-btn" data-filter="backbend">Backbends</button>
+            </div>
+
+            <div class="row" id="asana-grid">
+                <!-- Standing Poses -->
+                <div class="col-md-4 col-sm-6 asana-card" data-category="standing">
+                    <div class="card">
+                        <img src="/api/placeholder/400/300" class="card-img-top" alt="Tadasana - Mountain Pose">
+                        <div class="card-body">
+                            <h5 class="card-title">Tadasana (Mountain Pose)</h5>
+                            <p class="card-text">The foundation of all standing poses, Mountain Pose improves posture
+                                and balance.</p>
+                            <div class="mb-2">
+                                <span class="benefit-tag">Posture</span>
+                                <span class="benefit-tag">Balance</span>
+                                <span class="benefit-tag">Beginners</span>
+                            </div>
+                            <button class="btn btn-primary btn-view-details" data-asana="tadasana">View Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6 asana-card" data-category="standing">
+                    <div class="card">
+                        <img src="/api/placeholder/400/300" class="card-img-top" alt="Trikonasana - Triangle Pose">
+                        <div class="card-body">
+                            <h5 class="card-title">Trikonasana (Triangle Pose)</h5>
+                            <p class="card-text">Stretches and strengthens the thighs, knees, and ankles while relieving
+                                back pain.</p>
+                            <div class="mb-2">
+                                <span class="benefit-tag">Back Pain</span>
+                                <span class="benefit-tag">Digestion</span>
+                                <span class="benefit-tag">Stress</span>
+                            </div>
+                            <button class="btn btn-primary btn-view-details" data-asana="trikonasana">View
+                                Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6 asana-card" data-category="standing">
+                    <div class="card">
+                        <img src="/api/placeholder/400/300" class="card-img-top" alt="Virabhadrasana - Warrior Pose">
+                        <div class="card-body">
+                            <h5 class="card-title">Virabhadrasana (Warrior Pose)</h5>
+                            <p class="card-text">Strengthens the legs, opens the hips and chest, improving focus and
+                                stability.</p>
+                            <div class="mb-2">
+                                <span class="benefit-tag">Strength</span>
+                                <span class="benefit-tag">Focus</span>
+                                <span class="benefit-tag">Stamina</span>
+                            </div>
+                            <button class="btn btn-primary btn-view-details" data-asana="virabhadrasana">View
+                                Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seated Poses -->
+                <div class="col-md-4 col-sm-6 asana-card" data-category="seated">
+                    <div class="card">
+                        <img src="/api/placeholder/400/300" class="card-img-top" alt="Padmasana - Lotus Pose">
+                        <div class="card-body">
+                            <h5 class="card-title">Padmasana (Lotus Pose)</h5>
+                            <p class="card-text">A meditation pose that calms the mind and opens the hips.</p>
+                            <div class="mb-2">
+                                <span class="benefit-tag">Meditation</span>
+                                <span class="benefit-tag">Hip Flexibility</span>
+                                <span class="warning-tag">Knee Issues</span>
+                            </div>
+                            <button class="btn btn-primary btn-view-details" data-asana="padmasana">View
+                                Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6 asana-card" data-category="seated">
+                    <div class="card">
+                        <img src="/api/placeholder/400/300" class="card-img-top" alt="Baddha Konasana - Butterfly Pose">
+                        <div class="card-body">
+                            <h5 class="card-title">Baddha Konasana (Butterfly Pose)</h5>
+                            <p class="card-text">Opens the hips and groin, beneficial for menstrual discomfort and
+                                pregnancy.</p>
+                            <div class="mb-2">
+                                <span class="benefit-tag">Hip Opener</span>
+                                <span class="benefit-tag">Menstrual Pain</span>
+                                <span class="benefit-tag">Pregnancy</span>
+                            </div>
+                            <button class="btn btn-primary btn-view-details" data-asana="baddhakonasana">View
+                                Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prone Poses -->
+                <div class="col-md-4 col-sm-6 asana-card" data-category="prone">
+                    <div class="card">
+                        <img src="/api/placeholder/400/300" class="card-img-top" alt="Bhujangasana - Cobra Pose">
+                        <div class="card-body">
+                            <h5 class="card-title">Bhujangasana (Cobra Pose)</h5>
+                            <p class="card-text">Strengthens the spine and opens the chest, helping with respiratory
+                                issues.</p>
+                            <div class="mb-2">
+                                <span class="benefit-tag">Spine Health</span>
+                                <span class="benefit-tag">Asthma</span>
+                                <span class="warning-tag">Back Injury</span>
+                            </div>
+                            <button class="btn btn-primary btn-view-details" data-asana="bhujangasana">View
+                                Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Supine Poses -->
+                <div class="col-md-4 col-sm-6 asana-card" data-category="supine">
+                    <div class="card">
+                        <img src="/api/placeholder/400/300" class="card-img-top" alt="Savasana - Corpse Pose">
+                        <div class="card-body">
+                            <h5 class="card-title">Savasana (Corpse Pose)</h5>
+                            <p class="card-text">Deep relaxation pose that reduces stress and blood pressure.</p>
+                            <div class="mb-2">
+                                <span class="benefit-tag">Stress Relief</span>
+                                <span class="benefit-tag">Relaxation</span>
+                                <span class="benefit-tag">Everyone</span>
+                            </div>
+                            <button class="btn btn-primary btn-view-details" data-asana="savasana">View Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Balance Poses -->
+                <div class="col-md-4 col-sm-6 asana-card" data-category="balance">
+                    <div class="card">
+                        <img src="/api/placeholder/400/300" class="card-img-top" alt="Vrikshasana - Tree Pose">
+                        <div class="card-body">
+                            <h5 class="card-title">Vrikshasana (Tree Pose)</h5>
+                            <p class="card-text">Improves balance, focus, and concentration while strengthening legs.
+                            </p>
+                            <div class="mb-2">
+                                <span class="benefit-tag">Balance</span>
+                                <span class="benefit-tag">Focus</span>
+                                <span class="warning-tag">Vertigo</span>
+                            </div>
+                            <button class="btn btn-primary btn-view-details" data-asana="vrikshasana">View
+                                Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Twist Poses -->
+                <div class="col-md-4 col-sm-6 asana-card" data-category="twist">
+                    <div class="card">
+                        <img src="/api/placeholder/400/300" class="card-img-top"
+                            alt="Ardha Matsyendrasana - Half Lord of the Fishes Pose">
+                        <div class="card-body">
+                            <h5 class="card-title">Ardha Matsyendrasana (Half Lord of the Fishes)</h5>
+                            <p class="card-text">Detoxifies organs and improves spinal mobility.</p>
+                            <div class="mb-2">
+                                <span class="benefit-tag">Digestion</span>
+                                <span class="benefit-tag">Detox</span>
+                                <span class="warning-tag">Spine Issues</span>
+                            </div>
+                            <button class="btn btn-primary btn-view-details" data-asana="ardhamatsyendrasana">View
+                                Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inversion Poses -->
+                <div class="col-md-4 col-sm-6 asana-card" data-category="inversion">
+                    <div class="card">
+                        <img src="/api/placeholder/400/300" class="card-img-top" alt="Sirsasana - Headstand">
+                        <div class="card-body">
+                            <h5 class="card-title">Sirsasana (Headstand)</h5>
+                            <p class="card-text">Improves circulation, strengthens the upper body, and calms the mind.
+                            </p>
+                            <div class="mb-2">
+                                <span class="benefit-tag">Circulation</span>
+                                <span class="benefit-tag">Strength</span>
+                                <span class="warning-tag">High BP</span>
+                                <span class="warning-tag">Neck Issues</span>
+                            </div>
+                            <button class="btn btn-primary btn-view-details" data-asana="sirsasana">View
+                                Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backbend Poses -->
+                <div class="col-md-4 col-sm-6 asana-card" data-category="backbend">
+                    <div class="card">
+                        <img src="/api/placeholder/400/300" class="card-img-top" alt="Dhanurasana - Bow Pose">
+                        <div class="card-body">
+                            <h5 class="card-title">Dhanurasana (Bow Pose)</h5>
+                            <p class="card-text">Strengthens back muscles, opens chest, and improves posture.</p>
+                            <div class="mb-2">
+                                <span class="benefit-tag">Back Strength</span>
+                                <span class="benefit-tag">Posture</span>
+                                <span class="warning-tag">Hernia</span>
+                                <span class="warning-tag">Back Pain</span>
+                            </div>
+                            <button class="btn btn-primary btn-view-details" data-asana="dhanurasana">View
+                                Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6 asana-card" data-category="backbend">
+                    <div class="card">
+                        <img src="/api/placeholder/400/300" class="card-img-top" alt="Urdhva Dhanurasana - Wheel Pose">
+                        <div class="card-body">
+                            <h5 class="card-title">Urdhva Dhanurasana (Wheel Pose)</h5>
+                            <p class="card-text">Energizes the body, strengthens arms, legs, abdomen, and spine.</p>
+                            <div class="mb-2">
+                                <span class="benefit-tag">Energy</span>
+                                <span class="benefit-tag">Strength</span>
+                                <span class="warning-tag">Wrist Issues</span>
+                                <span class="warning-tag">Heart Conditions</span>
+                            </div>
+                            <button class="btn btn-primary btn-view-details" data-asana="urdhvadhanurasana">View
+                                Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Health Conditions Section -->
+    <section class="py-5 bg-light" id="health-conditions">
+        <div class="container">
+            <h2 class="section-title">Yoga for Common Health Conditions</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="card-title">Back Pain</h4>
+                            <p class="card-text">Yoga poses that can help alleviate back pain by strengthening core
+                                muscles and improving flexibility.</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Bhujangasana (Cobra Pose)</li>
+                                <li class="list-group-item">Balasana (Child's Pose)</li>
+                                <li class="list-group-item">Setu Bandhasana (Bridge Pose)</li>
+                                <li class="list-group-item">Adho Mukha Svanasana (Downward Dog)</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <button class="btn btn-primary w-100" data-bs-toggle="modal"
+                                data-bs-target="#backPainModal">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="card-title">Stress & Anxiety</h4>
+                            <p class="card-text">Calming yoga practices that help reduce stress levels and manage
+                                anxiety symptoms.</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Savasana (Corpse Pose)</li>
+                                <li class="list-group-item">Balasana (Child's Pose)</li>
+                                <li class="list-group-item">Viparita Karani (Legs-Up-The-Wall)</li>
+                                <li class="list-group-item">Pranayama (Breathing Exercises)</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <button class="btn btn-primary w-100" data-bs-toggle="modal"
+                                data-bs-target="#stressModal">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="card-title">Digestive Issues</h4>
+                            <p class="card-text">Poses that stimulate digestive organs and improve gastrointestinal
+                                function.</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Pavanamuktasana (Wind-Relieving Pose)</li>
+                                <li class="list-group-item">Ardha Matsyendrasana (Half Spinal Twist)</li>
+                                <li class="list-group-item">Dhanurasana (Bow Pose)</li>
+                                <li class="list-group-item">Vajrasana (Thunderbolt Pose)</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <button class="btn btn-primary w-100" data-bs-toggle="modal"
+                                data-bs-target="#digestiveModal">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="card-title">Insomnia</h4>
+                            <p class="card-text">Relaxing poses that promote better sleep and help overcome insomnia.
+                            </p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Uttanasana (Forward Bend)</li>
+                                <li class="list-group-item">Viparita Karani (Legs-Up-The-Wall)</li>
+                                <li class="list-group-item">Savasana (Corpse Pose)</li>
+                                <li class="list-group-item">Supta Baddha Konasana (Reclining Bound Angle)</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <button class="btn btn-primary w-100" data-bs-toggle="modal"
+                                data-bs-target="#insomniaModal">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="card-title">Respiratory Issues</h4>
+                            <p class="card-text">Poses that improve lung capacity and respiratory function.</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Bhujangasana (Cobra Pose)</li>
+                                <li class="list-group-item">Matsyasana (Fish Pose)</li>
+                                <li class="list-group-item">Ustrasana (Camel Pose)</li>
+                                <li class="list-group-item">Pranayama (Breathing Exercises)</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <button class="btn btn-primary w-100" data-bs-toggle="modal"
+                                data-bs-target="#respiratoryModal">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="card-title">Hypertension</h4>
+                            <p class="card-text">Gentle yoga practices that help manage blood pressure levels.</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Viparita Karani (Legs-Up-The-Wall)</li>
+                                <li class="list-group-item">Shavasana (Corpse Pose)</li>
+                                <li class="list-group-item">Sukhasana (Easy Pose with Deep Breathing)</li>
+                                <li class="list-group-item">Baddha Konasana (Butterfly Pose)</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <button class="btn btn-primary w-100" data-bs-toggle="modal"
+                                data-bs-target="#hypertensionModal">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Yoga Section -->
+    <section class="py-5" id="about">
+        <div class="container">
+            <h2 class="section-title">About Yoga</h2>
+            <div class="row">
+                <div class="col-lg-6">
+                    <h4>What is Yoga?</h4>
+                    <p>Yoga is an ancient practice that originated in India over 5,000 years ago. It combines physical
+                        postures (asanas), breathing techniques (pranayama), and meditation to promote physical health,
+                        mental clarity, and spiritual well-being.</p>
+                    <p>The word "yoga" comes from the Sanskrit word "yuj," which means to join or unite, symbolizing the
+                        union of body, mind, and spirit.</p>
+
+                    <h4 class="mt-4">Benefits of Regular Yoga Practice</h4>
+                    <ul>
+                        <li>Improves flexibility, strength,
+                        <li>Improves flexibility, strength, and posture</li>
+                        <li>Reduces stress and promotes relaxation</li>
+                        <li>Enhances focus and mental clarity</li>
+                        <li>Boosts immune function</li>
+                        <li>Improves breathing and respiratory function</li>
+                        <li>Promotes better sleep</li>
+                        <li>Helps manage chronic conditions like back pain, arthritis, and hypertension</li>
+                        <li>Improves balance and stability</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <h4>Starting Your Yoga Practice</h4>
+                    <p>If you're new to yoga, here are some tips to get started:</p>
+                    <ul>
+                        <li>Begin with beginner-friendly poses</li>
+                        <li>Use props like blocks, straps, and cushions for support</li>
+                        <li>Focus on your breath throughout the practice</li>
+                        <li>Don't push yourself too hard - yoga is not competitive</li>
+                        <li>Practice consistently, even if for short periods</li>
+                        <li>Consider joining a class with a qualified instructor</li>
+                    </ul>
+
+                    <h4 class="mt-4">Precautions</h4>
+                    <p>While yoga is generally safe for most people, it's important to:</p>
+                    <ul>
+                        <li>Consult with a healthcare provider if you have existing health conditions</li>
+                        <li>Inform your yoga instructor about any injuries or limitations</li>
+                        <li>Listen to your body and never force a pose that causes pain</li>
+                        <li>Modify poses as needed to accommodate your body's needs</li>
+                        <li>Avoid certain poses if you have specific contraindications</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Asana Detail Modals -->
+    <!-- Tadasana Modal -->
+    <div class="modal fade" id="tadasanaModal" tabindex="-1" aria-labelledby="tadasanaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tadasanaModalLabel">Tadasana (Mountain Pose)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="/api/placeholder/500/400" class="img-fluid rounded"
+                                alt="Tadasana - Mountain Pose">
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Benefits:</h5>
+                            <ul>
+                                <li>Improves posture and body awareness</li>
+                                <li>Strengthens thighs, knees, and ankles</li>
+                                <li>Firms abdomen and buttocks</li>
+                                <li>Relieves sciatica</li>
+                                <li>Reduces flat feet</li>
+                            </ul>
+
+                            <h5 class="mt-3">Recommended for:</h5>
+                            <p>All levels, especially beginners. Good for those with posture issues or those who want to
+                                build a strong foundation for other standing poses.</p>
+
+                            <h5 class="mt-3">Contraindications:</h5>
+                            <p>Generally safe for everyone. Those with low blood pressure or who feel dizzy should
+                                practice against a wall for support.</p>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <h5>How to Perform:</h5>
+                            <ol>
+                                <li>Stand with feet together or hip-width apart</li>
+                                <li>Distribute weight evenly across both feet</li>
+                                <li>Engage leg muscles and lift kneecaps</li>
+                                <li>Tuck tailbone slightly and engage core</li>
+                                <li>Lengthen spine and broaden shoulders</li>
+                                <li>Arms alongside body with palms facing forward</li>
+                                <li>Breathe deeply and hold for 30-60 seconds</li>
+                            </ol>
+
+                            <h5 class="mt-3">Modifications:</h5>
+                            <ul>
+                                <li>Stand with feet hip-width apart for greater stability</li>
+                                <li>Practice against a wall for balance support</li>
+                                <li>Use a chair for support if needed</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Health Condition Modals -->
+    <!-- Back Pain Modal -->
+    <div class="modal fade" id="backPainModal" tabindex="-1" aria-labelledby="backPainModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="backPainModalLabel">Yoga for Back Pain</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Back pain is one of the most common health issues that can be effectively managed with regular
+                        yoga practice. The following poses focus on strengthening core muscles, improving flexibility,
+                        and releasing tension in the back.</p>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <img src="/api/placeholder/400/300" class="card-img-top" alt="Cat-Cow Stretch">
+                                <div class="card-body">
+                                    <h5 class="card-title">Cat-Cow Stretch (Marjaryasana-Bitilasana)</h5>
+                                    <p class="card-text">This gentle flow between two poses helps increase spine
+                                        flexibility and relieves tension in the back and neck.</p>
+                                    <p><strong>Recommended for:</strong> Almost everyone with back pain</p>
+                                    <p><strong>Avoid if:</strong> You have serious neck injuries</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <img src="/api/placeholder/400/300" class="card-img-top" alt="Downward Facing Dog">
+                                <div class="card-body">
+                                    <h5 class="card-title">Downward Facing Dog (Adho Mukha Svanasana)</h5>
+                                    <p class="card-text">Elongates the spine and stretches the back muscles, helping to
+                                        relieve tension and pain.</p>
+                                    <p><strong>Recommended for:</strong> Most types of back pain</p>
+                                    <p><strong>Avoid if:</strong> You have severe carpal tunnel syndrome, late-term
+                                        pregnancy, or high blood pressure</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <img src="/api/placeholder/400/300" class="card-img-top" alt="Child's Pose">
+                                <div class="card-body">
+                                    <h5 class="card-title">Child's Pose (Balasana)</h5>
+                                    <p class="card-text">A restful pose that gently stretches the lower back, relieving
+                                        tension and stress.</p>
+                                    <p><strong>Recommended for:</strong> Almost everyone with back pain</p>
+                                    <p><strong>Avoid if:</strong> You have knee injuries or are in late pregnancy</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <img src="/api/placeholder/400/300" class="card-img-top" alt="Bridge Pose">
+                                <div class="card-body">
+                                    <h5 class="card-title">Bridge Pose (Setu Bandhasana)</h5>
+                                    <p class="card-text">Strengthens the back muscles and glutes while opening the chest
+                                        and shoulders.</p>
+                                    <p><strong>Recommended for:</strong> Lower back pain and spinal stiffness</p>
+                                    <p><strong>Avoid if:</strong> You have neck injuries or severe back issues</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning mt-3">
+                        <h5><i class="fas fa-exclamation-triangle me-2"></i>Important Note</h5>
+                        <p class="mb-0">Always consult with a healthcare provider before starting yoga for back pain,
+                            especially if you have a serious back injury, herniated disc, or other spine-related
+                            conditions. Practice these poses gently and stop if you experience increased pain.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Asana Details Container (For dynamic loading) -->
+    <div id="asana-detail-container"></div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Footer
+    <footer class="py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-om me-2"></i>Yoga Asanas Guide</h5>
+                    <p>Your comprehensive resource for yoga poses, benefits, and health applications.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#home" class="text-white">Home</a></li>
+                        <li><a href="#asana-categories" class="text-white">Asanas</a></li>
+                        <li><a href="#health-conditions" class="text-white">Health Conditions</a></li>
+                        <li><a href="#about" class="text-white">About Yoga</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Disclaimer</h5>
+                    <p class="small">This website is for informational purposes only. Consult with a healthcare
+                        professional before starting any exercise program.</p>
+                </div>
+            </div>
+            <hr class="mt-4 mb-3" style="border-color: rgba(255,255,255,0.2);">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 Yoga Asanas Guide. All rights reserved.</p>
+            </div>
+        </div>
+    </footer> -->
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        // Asanas Database (Extended)
+        const asanasData = {
+            "tadasana": {
+                "name": "Tadasana (Mountain Pose)",
+                "image": "/api/placeholder/500/400",
+                "description": "The foundation of all standing poses, Mountain Pose improves posture and body awareness.",
+                "benefits": [
+                    "Improves posture and alignment",
+                    "Strengthens thighs, knees, and ankles",
+                    "Increases body awareness",
+                    "Relieves sciatica",
+                    "Reduces flat feet"
+                ],
+                "steps": [
+                    "Stand with feet together or hip-width apart",
+                    "Distribute weight evenly across both feet",
+                    "Engage leg muscles and lift kneecaps",
+                    "Tuck tailbone slightly and engage core",
+                    "Lengthen spine and broaden shoulders",
+                    "Arms alongside body with palms facing forward",
+                    "Breathe deeply and hold for 30-60 seconds"
+                ],
+                "recommended": "All levels, especially beginners. Good for those with posture issues or those who want to build a strong foundation for other standing poses.",
+                "contraindications": "Generally safe for everyone. Those with low blood pressure or who feel dizzy should practice against a wall for support.",
+                "modifications": [
+                    "Stand with feet hip-width apart for greater stability",
+                    "Practice against a wall for balance support",
+                    "Use a chair for support if needed"
+                ],
+                "healthConditions": ["Posture Issues", "Balance Problems", "General Fitness"]
+            },
+            "trikonasana": {
+                "name": "Trikonasana (Triangle Pose)",
+                "image": "/api/placeholder/500/400",
+                "description": "A standing pose that stretches and strengthens the legs, back, and side body.",
+                "benefits": [
+                    "Stretches and strengthens the thighs, knees, and ankles",
+                    "Stretches the hips, groins, hamstrings, and calves",
+                    "Stretches the shoulders, chest, and spine",
+                    "Relieves backache and stress",
+                    "Stimulates abdominal organs and improves digestion"
+                ],
+                "steps": [
+                    "Stand with feet wide apart (about 3-4 feet)",
+                    "Turn right foot out 90 degrees and left foot in slightly",
+                    "Extend arms parallel to the floor, palms down",
+                    "Exhale and extend torso to the right directly over the right leg",
+                    "Rest right hand on shin, ankle, or floor (depending on flexibility)",
+                    "Extend left arm straight up",
+                    "Turn head to look up at left hand",
+                    "Hold for 30-60 seconds, then repeat on other side"
+                ],
+                "recommended": "Most practitioners, especially those with back pain, sciatica, or digestive issues.",
+                "contraindications": "High or low blood pressure (practice with caution), neck problems (don't turn head to look up), diarrhea, headache.",
+                "modifications": [
+                    "Place hand on a block instead of the floor",
+                    "Rest back against a wall for support",
+                    "Keep gaze forward instead of looking up if you have neck issues"
+                ],
+                "healthConditions": ["Back Pain", "Digestion Issues", "Stress", "Anxiety"]
+            },
+            "virabhadrasana": {
+                "name": "Virabhadrasana (Warrior Pose)",
+                "image": "/api/placeholder/500/400",
+                "description": "A powerful standing pose that builds strength and stamina.",
+                "benefits": [
+                    "Strengthens and tones legs, especially thighs and calves",
+                    "Opens chest and shoulders",
+                    "Improves balance and core stability",
+                    "Enhances focus and concentration",
+                    "Energizes the entire body"
+                ],
+                "steps": [
+                    "Step feet wide apart (about 4 feet)",
+                    "Turn right foot out 90 degrees and left foot in slightly",
+                    "Raise arms parallel to the floor, palms down",
+                    "Bend right knee over right ankle, keeping knee aligned with middle toe",
+                    "Gaze over right fingertips",
+                    "Hold for 30-60 seconds, then repeat on other side"
+                ],
+                "recommended": "Most practitioners looking to build strength and stamina.",
+                "contraindications": "High blood pressure, heart problems, knee injuries (practice with caution).",
+                "modifications": [
+                    "Don't bend knee as deeply",
+                    "Practice against a wall for support",
+                    "Lower arms if shoulder issues are present"
+                ],
+                "healthConditions": ["Strength Building", "Mental Focus", "Energy Boost", "Stamina Development"]
+            },
+            "padmasana": {
+                "name": "Padmasana (Lotus Pose)",
+                "image": "/api/placeholder/500/400",
+                "description": "The classic meditation pose that calms the mind and opens the hips.",
+                "benefits": [
+                    "Calms the mind and reduces stress",
+                    "Opens the hips and stretches ankles and knees",
+                    "Improves posture and spinal alignment",
+                    "Stimulates the pelvis, spine, abdomen, and bladder",
+                    "Eases menstrual discomfort and childbirth"
+                ],
+                "steps": [
+                    "Sit on the floor with legs extended",
+                    "Bend right knee and place right foot on left thigh",
+                    "Bend left knee and place left foot on right thigh",
+                    "Keep spine straight and shoulders relaxed",
+                    "Place hands on knees in a mudra position",
+                    "Hold for as long as comfortable while focusing on breath"
+                ],
+                "recommended": "Advanced practitioners and those with open hips. Great for meditation practice.",
+                "contraindications": "Knee or ankle injuries, sciatica, severe hip tightness.",
+                "modifications": [
+                    "Half lotus (one foot on opposite thigh, other foot under opposite thigh)",
+                    "Practice Easy Pose (Sukhasana) instead",
+                    "Use a meditation cushion for support"
+                ],
+                "healthConditions": ["Meditation Practice", "Mental Clarity", "Hip Flexibility", "Stress Reduction"]
+            },
+            "baddhakonasana": {
+                "name": "Baddha Konasana (Butterfly Pose)",
+                "image": "/api/placeholder/500/400",
+                "description": "A seated pose that opens the hips and groin area.",
+                "benefits": [
+                    "Opens hips, groins, and inner thighs",
+                    "Stimulates abdominal organs and improves digestion",
+                    "Relieves menstrual discomfort",
+                    "Beneficial during pregnancy for delivery preparation",
+                    "Reduces fatigue and anxiety"
+                ],
+                "steps": [
+                    "Sit on the floor with legs extended",
+                    "Bend knees and bring soles of feet together",
+                    "Draw heels toward pelvis as close as is comfortable",
+                    "Hold feet with hands",
+                    "Allow knees to drop toward floor",
+                    "Keep spine straight and shoulders relaxed",
+                    "Hold for 1-5 minutes while breathing deeply"
+                ],
+                "recommended": "Most practitioners, especially those with hip tightness, menstrual discomfort, or pregnant women (with approval from healthcare provider).",
+                "contraindications": "Groin or knee injury (practice with caution and support).",
+                "modifications": [
+                    "Place cushions under knees for support",
+                    "Sit on a folded blanket to elevate hips",
+                    "Keep feet further from groin if there's discomfort"
+                ],
+                "healthConditions": ["Hip Flexibility", "Menstrual Pain", "Pregnancy Preparation", "Digestive Issues"]
+            },
+            "bhujangasana": {
+                "name": "Bhujangasana (Cobra Pose)",
+                "image": "/api/placeholder/500/400",
+                "description": "A prone backbend that strengthens the spine and opens the chest.",
+                "benefits": [
+                    "Strengthens the spine and back muscles",
+                    "Opens chest and improves breathing capacity",
+                    "Stimulates abdominal organs",
+                    "Relieves stress and fatigue",
+                    "Beneficial for asthma and other respiratory conditions"
+                ],
+                "steps": [
+                    "Lie on stomach with legs extended and tops of feet on floor",
+                    "Place hands under shoulders with elbows close to body",
+                    "Press tops of feet, thighs, and pelvis into floor",
+                    "On an inhale, straighten arms to lift chest off floor",
+                    "Keep slight bend in elbows and shoulders away from ears",
+                    "Keep pubic bone pressed into floor",
+                    "Hold for 15-30 seconds while breathing deeply",
+                    "Exhale and lower back to floor"
+                ],
+                "recommended": "Most practitioners, especially those with respiratory issues, back weakness, or fatigue.",
+                "contraindications": "Back injury, carpal tunnel syndrome, headache, pregnancy.",
+                "modifications": [
+                    "Keep elbows bent for a less intense backbend",
+                    "Don't lift as high if experiencing discomfort",
+                    "Place a rolled towel under the pubic bone for support"
+                ],
+                "healthConditions": ["Back Strength", "Respiratory Issues", "Asthma", "Fatigue"]
+            },
+            "savasana": {
+                "name": "Savasana (Corpse Pose)",
+                "image": "/api/placeholder/500/400",
+                "description": "A restorative pose of complete relaxation.",
+                "benefits": [
+                    "Deeply relaxes the entire body",
+                    "Calms the mind and reduces anxiety",
+                    "Lowers blood pressure",
+                    "Reduces headache, fatigue, and insomnia",
+                    "Promotes overall health through deep rest"
+                ],
+                "steps": [
+                    "Lie on back with legs extended, arms at sides",
+                    "Allow feet to fall open",
+                    "Place arms at sides with palms facing up",
+                    "Close eyes and relax entire body",
+                    "Focus on breath and let go of all tension",
+                    "Remain in pose for 5-15 minutes",
+                    "To exit, deepen breath and slowly reawaken body"
+                ],
+                "recommended": "Everyone, at the end of every yoga practice.",
+                "contraindications": "Generally safe for all. Those who are uncomfortable lying flat may need modifications.",
+                "modifications": [
+                    "Place small pillow under head for neck comfort",
+                    "Place bolster under knees to relieve lower back",
+                    "Cover with blanket if feeling cold"
+                ],
+                "healthConditions": ["Stress Relief", "Anxiety", "Insomnia", "High Blood Pressure", "Fatigue"]
+            },
+            "vrikshasana": {
+                "name": "Vrikshasana (Tree Pose)",
+                "image": "/api/placeholder/500/400",
+                "description": "A standing balance pose that improves focus and stability.",
+                "benefits": [
+                    "Improves balance and stability",
+                    "Strengthens legs, ankles, and feet",
+                    "Opens hips and stretches inner thighs",
+                    "Improves concentration and focus",
+                    "Cultivates calm and meditative state"
+                ],
+                "steps": [
+                    "Stand in Tadasana (Mountain Pose)",
+                    "Shift weight slightly onto left foot",
+                    "Bend right knee and place right foot on inner left thigh (or lower if needed)",
+                    "Press right foot into left thigh and left thigh into right foot",
+                    "Bring hands to heart center or extend overhead",
+                    "Fix gaze on a point in front of you",
+                    "Hold for 30-60 seconds, then repeat on other side"
+                ],
+                "recommended": "Most practitioners looking to improve balance, focus, and hip flexibility.",
+                "contraindications": "Migraine, insomnia, low blood pressure, vertigo.",
+                "modifications": [
+                    "Place foot on ankle or calf instead of thigh",
+                    "Practice against a wall for support",
+                    "Keep hands at heart center if raising arms is difficult"
+                ],
+                "healthConditions": ["Balance Issues", "Concentration", "Hip Flexibility", "Stress"]
+            },
+            "ardhamatsyendrasana": {
+                "name": "Ardha Matsyendrasana (Half Lord of the Fishes Pose)",
+                "image": "/api/placeholder/500/400",
+                "description": "A seated spinal twist that stimulates digestion and increases spine mobility.",
+                "benefits": [
+                    "Stimulates digestive organs",
+                    "Detoxifies liver and kidneys",
+                    "Increases spine mobility",
+                    "Relieves backache and hip pain",
+                    "Improves oxygen supply to lungs"
+                ],
+                "steps": [
+                    "Sit with legs extended",
+                    "Bend right knee and place right foot flat on floor outside left thigh",
+                    "Bend left knee and place left foot beside right hip",
+                    "Exhale and twist torso to the right",
+                    "Place left elbow on outside of right knee",
+                    "Place right hand on floor behind you",
+                    "Turn head to look over right shoulder",
+                    "Hold for 30-60 seconds, then repeat on other side"
+                ],
+                "recommended": "Most practitioners, especially those with digestive issues or back stiffness.",
+                "contraindications": "Severe back or spine injury, disc herniation, peptic ulcer, hernia.",
+                "modifications": [
+                    "Keep bottom leg straight if difficult to bend both knees",
+                    "Use a wall for back support",
+                    "Don't twist as deeply if experiencing discomfort"
+                ],
+                "healthConditions": ["Digestive Issues", "Detoxification", "Back Stiffness", "Respiratory Health"]
+            },
+            "sirsasana": {
+                "name": "Sirsasana (Headstand)",
+                "image": "/api/placeholder/500/400",
+                "description": "An inverted pose that improves circulation and builds upper body strength.",
+                "benefits": [
+                    "Improves blood circulation to brain",
+                    "Strengthens arms, shoulders, and spine",
+                    "Calms the mind and reduces stress",
+                    "Stimulates pituitary and pineal glands",
+                    "Improves digestion and relieves constipation"
+                ],
+                "steps": [
+                    "Kneel on floor and interlock fingers, creating a cup with hands",
+                    "Place forearms on floor with elbows shoulder-width apart",
+                    "Place crown of head on floor, back of head against hands",
+                    "Lift knees off floor and walk feet toward head",
+                    "Raise legs up one at a time or together if experienced",
+                    "Align body in a straight line",
+                    "Hold for 1-5 minutes (gradually building time)",
+                    "To exit, lower legs with control"
+                ],
+                "recommended": "Intermediate to advanced practitioners with adequate upper body strength.",
+                "contraindications": "High blood pressure, heart conditions, neck injuries, glaucoma, detached retina, ear infection, pregnancy.",
+                "modifications": [
+                    "Practice against a wall for support",
+                    "Use a headstand bench or props",
+                    "Start with legs in pike position before extending up"
+                ],
+                "healthConditions": ["Circulation", "Upper Body Strength", "Mental Clarity", "Hormonal Balance"]
+            },
+            "dhanurasana": {
+                "name": "Dhanurasana (Bow Pose)",
+                "image": "/api/placeholder/500/400",
+                "description": "A prone backbend that strengthens the back and opens the chest.",
+                "benefits": [
+                    "Strengthens back and abdominal muscles",
+                    "Opens chest and improves breathing",
+                    "Stimulates digestive organs",
+                    "Improves posture and spinal flexibility",
+                    "Relieves stress and fatigue"
+                ],
+                "steps": [
+                    "Lie on stomach with arms alongside body",
+                    "Bend knees and bring heels toward buttocks",
+                    "Reach back and grab outside of ankles",
+                    "Inhale and lift chest and thighs off floor",
+                    "Look forward and breathe deeply",
+                    "Hold for 20-30 seconds",
+                    "Exhale and release back to floor"
+                ],
+                "recommended": "Intermediate practitioners looking to build back strength and open the chest.",
+                "contraindications": "Hernia, peptic ulcer, back or neck injury, high blood pressure, pregnancy.",
+                "modifications": [
+                    "Lift chest or legs only if full pose is too intense",
+                    "Use a strap around ankles if unable to reach feet",
+                    "Don't lift as high if experiencing discomfort"
+                ],
+                "healthConditions": ["Back Strength", "Posture Issues", "Respiratory Health", "Digestion"]
+            },
+            "urdhvadhanurasana": {
+                "name": "Urdhva Dhanurasana (Wheel Pose)",
+                "image": "/api/placeholder/500/400",
+                "description": "A deep backbend that opens the entire front body and energizes the system.",
+                "benefits": [
+                    "Strengthens arms, wrists, legs, buttocks, abdomen, and spine",
+                    "Stretches chest, lungs, and shoulders",
+                    "Increases energy and counteracts depression",
+                    "Stimulates thyroid and pituitary glands",
+                    "Improves spinal flexibility"
+                ],
+                "steps": [
+                    "Lie on back with knees bent, feet flat on floor near buttocks",
+                    "Bend elbows and place hands beside head with fingers pointing toward shoulders",
+                    "Press feet and hands firmly into floor",
+                    "Inhale and lift hips and torso off floor",
+                    "Straighten arms and legs as much as possible",
+                    "Hold for 5-10 seconds, gradually increasing time",
+                    "Exhale and slowly lower back to floor"
+                ],
+                "recommended": "Intermediate to advanced practitioners with good spinal flexibility.",
+                "contraindications": "Back or wrist injury, heart problems, high blood pressure, spinal disc issues, headache, carpal tunnel syndrome.",
+                "modifications": [
+                    "Use blocks under hands to reduce wrist pressure",
+                    "Keep feet wider apart for more stability",
+                    "Try Bridge Pose as an alternative"
+                ],
+                "healthConditions": ["Energy Boost", "Depression", "Spinal Flexibility", "Strength Building"]
+            }
+        };
+
+        // Health Conditions Data
+        const healthConditionsData = {
+            "backPain": {
+                "title": "Yoga for Back Pain",
+                "description": "Back pain is one of the most common health issues that can be effectively managed with regular yoga practice. These poses focus on strengthening core muscles, improving flexibility, and releasing tension in the back.",
+                "recommendedAsanas": ["Bhujangasana", "Balasana", "Setu Bandhasana", "Adho Mukha Svanasana"],
+                "cautions": "Always consult with a healthcare provider before starting yoga for back pain, especially if you have a serious back injury, herniated disc, or other spine-related conditions."
+            },
+            "stress": {
+                "title": "Yoga for Stress & Anxiety",
+                "description": "Stress and anxiety can be managed effectively with calming yoga practices that promote relaxation and mental clarity.",
+                "recommendedAsanas": ["Savasana", "Balasana", "Viparita Karani", "Pranayama"],
+                "cautions": "While these poses are generally safe, always practice mindfully and avoid forcing your body into positions that cause discomfort."
+            },
+            "digestive": {
+                "title": "Yoga for Digestive Issues",
+                "description": "Digestive problems can be alleviated with yoga poses that gently massage and stimulate the digestive organs, improving function and relieving.",
+                // ": "Digestive problems can be alleviated with yoga poses that gently massage and stimulate the digestive organs, improving function and relieving discomfort.",
+                "recommendedAsanas": ["Pavanamuktasana", "Ardha Matsyendrasana", "Dhanurasana", "Vajrasana"],
+                "cautions": "If you have serious digestive conditions like ulcers or hernias, consult your doctor before practicing these poses."
+            },
+            "insomnia": {
+                "title": "Yoga for Insomnia",
+                "description": "Sleep issues can be addressed with relaxing yoga practices that calm the nervous system and prepare the body for restful sleep.",
+                "recommendedAsanas": ["Uttanasana", "Viparita Karani", "Savasana", "Supta Baddha Konasana"],
+                "cautions": "Practice these poses 1-2 hours before bedtime for best results. Avoid stimulating poses right before sleep."
+            }
+        };
+
+        // Document Ready Function
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize asana details modals
+            document.querySelectorAll('.btn-view-details').forEach(button => {
+                button.addEventListener('click', function() {
+                    const asanaId = this.getAttribute('data-asana');
+                    displayAsanaDetails(asanaId);
+                });
+            });
+            
+            // Initialize filter buttons
+            document.querySelectorAll('.filter-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    filterAsanas(filter);
+                    
+                    // Update active state
+                    document.querySelectorAll('.filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+            
+            // Initialize search functionality
+            document.getElementById('search-button').addEventListener('click', function() {
+                const searchQuery = document.getElementById('search-input').value.toLowerCase();
+                searchAsanas(searchQuery);
+            });
+            
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const searchQuery = document.getElementById('search-input').value.toLowerCase();
+                    searchAsanas(searchQuery);
+                }
+            });
+            
+            // Initialize back to top button
+            const backToTopButton = document.querySelector('.back-to-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.style.display = 'block';
+                } else {
+                    backToTopButton.style.display = 'none';
+                }
+            });
+            
+            backToTopButton.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Function to display asana details in a modal
+        function displayAsanaDetails(asanaId) {
+            const asana = asanasData[asanaId];
+            if (!asana) return;
+            
+            const detailContainer = document.getElementById('asana-detail-container');
+            
+            // Create modal HTML
+            let modalHtml = `
+            <div class="modal fade" id="${asanaId}Modal" tabindex="-1" aria-labelledby="${asanaId}ModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="${asanaId}ModalLabel">${asana.name}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <img src="${asana.image}" class="img-fluid rounded" alt="${asana.name}">
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Benefits:</h5>
+                                    <ul>
+            `;
+            
+            // Add benefits
+            asana.benefits.forEach(benefit => {
+                modalHtml += <li>${benefit}</li>;
+            });
+            
+            modalHtml += `
+                                    </ul>
+                                    
+                                    <h5 class="mt-3">Recommended for:</h5>
+                                    <p>${asana.recommended}</p>
+                                    
+                                    <h5 class="mt-3">Contraindications:</h5>
+                                    <p>${asana.contraindications}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h5>How to Perform:</h5>
+                                    <ol>
+            `;
+            
+            // Add steps
+            asana.steps.forEach(step => {
+                modalHtml += <li>${step}</li>;
+            });
+            
+            modalHtml += `
+                                    </ol>
+                                    
+                                    <h5 class="mt-3">Modifications:</h5>
+                                    <ul>
+            `;
+            
+            // Add modifications
+            asana.modifications.forEach(mod => {
+                modalHtml += <li>${mod}</li>;
+            });
+            
+            modalHtml += `
+                                    </ul>
+                                    
+                                    <h5 class="mt-3">Health Conditions This Asana Helps With:</h5>
+                                    <div class="mb-2">
+            `;
+            
+            // Add health conditions
+            asana.healthConditions.forEach(condition => {
+                modalHtml += `<span class="benefit-tag">${condition}</span> `;
+            });
+            
+            modalHtml += `
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+            
+            // Set the HTML to the container
+            detailContainer.innerHTML = modalHtml;
+            
+            // Show the modal
+            const modal = new bootstrap.Modal(document.getElementById({asanaId}modal));
+            modal.show();
+        }
+        
+        // Function to filter asanas by category
+        function filterAsanas(category) {
+            const asanaCards = document.querySelectorAll('.asana-card');
+            
+            asanaCards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Function to search asanas
+        function searchAsanas(query) {
+            const searchResultsSection = document.getElementById('search-results-section');
+            const searchResultsContainer = document.getElementById('search-results');
+            
+            // Clear previous results
+            searchResultsContainer.innerHTML = '';
+            
+            if (query.length < 2) {
+                searchResultsSection.style.display = 'none';
+                return;
+            }
+            
+            let foundResults = false;
+            let resultsHtml = '';
+            
+            // Search through asanas
+            for (const [id, asana] of Object.entries(asanasData)) {
+                if (asana.name.toLowerCase().includes(query) || 
+                    asana.description.toLowerCase().includes(query) ||
+                    asana.healthConditions.some(condition => condition.toLowerCase().includes(query))) {
+                    
+                    foundResults = true;
+                    
+                    resultsHtml += `
+                    <div class="col-md-4 col-sm-6">
+                        <div class="card">
+                            <img src="${asana.image}" class="card-img-top" alt="${asana.name}">
+                            <div class="card-body">
+                                <h5 class="card-title">${asana.name}</h5>
+                                <p class="card-text">${asana.description}</p>
+                                <div class="mb-2">
+                    `;
+                    
+                    // Add health condition tags
+                    asana.healthConditions.forEach(condition => {
+                        resultsHtml += `<span class="benefit-tag">${condition}</span> `;
+                    });
+                    
+                    resultsHtml += `
+                                </div>
+                                <button class="btn btn-primary btn-view-details" data-asana="${id}">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                }
+            }
+            
+            if (foundResults) {
+                searchResultsContainer.innerHTML = resultsHtml;
+                searchResultsSection.style.display = 'block';
+                
+                // Reinitialize view details buttons for search results
+                document.querySelectorAll('#search-results .btn-view-details').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const asanaId = this.getAttribute('data-asana');
+                        displayAsanaDetails(asanaId);
+                    });
+                });
+                
+                // Scroll to results
+                searchResultsSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                searchResultsContainer.innerHTML = `
+                <div class="col-12 text-center">
+                    <p>No results found for "${query}". Try a different search term.</p>
+                </div>
+                `;
+                searchResultsSection.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
