@@ -15,7 +15,7 @@ Medicinal Plant Database
 Discover a comprehensive platform that catalogs medicinal plants used in Ayurvedic treatments.
 
 🛠 Tech Stack
-Frontend
+Frontend:-
 
 HTML
 
@@ -25,13 +25,13 @@ JavaScript
 
 Bootstrap
 
-Backend
+Backend:-
 
 Python
 
 Flask
 
-Database
+Database:-
 
 SQL
 
